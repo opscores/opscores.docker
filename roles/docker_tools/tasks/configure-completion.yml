@@ -1,0 +1,35 @@
+---
+# Configure bash completion
+
+- name: Create bash completion directory if it doesn't exist
+  ansible.builtin.file:
+    path: /etc/bash_completion.d
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root
+  become: true
+
+- name: Download Docker bash completion script
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/docker/cli/master/contrib/completion/bash/docker
+    dest: /etc/bash_completion.d/docker
+    mode: '0644'
+    owner: root
+    group: root
+  become: true
+  when: docker_tools_completion_file_source == ""
+
+- name: Install custom bash completion script
+  ansible.builtin.copy:
+    src: "{{ docker_tools_completion_file_source }}"
+    dest: /etc/bash_completion.d/docker
+    mode: '0644'
+    owner: root
+    group: root
+  become: true
+  when: docker_tools_completion_file_source != ""
+
+- name: Print bash completion setup status
+  ansible.builtin.debug:
+    msg: "Docker bash completion has been installed"

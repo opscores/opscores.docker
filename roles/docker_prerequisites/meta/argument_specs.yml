@@ -1,0 +1,19 @@
+---
+# Argument specification for docker_prerequisites role
+# Used for validating role parameters passed at runtime
+
+argument_specs:
+  main:
+    short_description: Main entry point for the docker_prerequisites role.
+    options:
+      docker_prerequisites_remove_conflicts:
+        type: "bool"
+        default: true
+        description: >
+          If true, the role will attempt to remove conflicting packages like podman,
+          podman-docker, docker.io, or docker-ce before proceeding.
+      docker_prerequisites_install_completion:
+        type: "bool"
+        default: false
+        description: >
+          If true, the role will install bash completion package for Docker commands.

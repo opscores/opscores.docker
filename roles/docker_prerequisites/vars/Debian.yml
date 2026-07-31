@@ -1,0 +1,11 @@
+---
+# Variables for Debian systems
+
+docker_debian_packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - lsb-release
+  - slirp4netns
+  - fuse-overlayfs

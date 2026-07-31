@@ -1,0 +1,31 @@
+---
+argument_specs:
+  main:
+    short_description: Install Docker auxiliary tools
+    description: Role to install Docker auxiliary tools on supported systems
+    options:
+      docker_tools_packages:
+        type: "list"
+        default: []
+        required: false
+        description: "List of package names to install via apt/dnf."
+      docker_tools_binaries:
+        type: "dict"
+        default: {}
+        required: false
+        description: "Dictionary where key is binary name, value is dict with url and checksum (SHA256). For archive-based tools (e.g. tar.gz) set extract: true. Example: {'dive': {'url': 'https://github.com/wagoodman/dive/releases/...', 'checksum': 'sha256:...', 'extract': true}}"
+      docker_tools_install_completion:
+        type: "bool"
+        default: false
+        required: false
+        description: "Whether to install bash completion for docker."
+      docker_tools_binary_directory:
+        type: "str"
+        default: "/usr/local/bin"
+        required: false
+        description: "Directory for installing binary files."
+      docker_tools_completion_file_source:
+        type: "str"
+        default: ""
+        required: false
+        description: "Path to bash completion file (local in role or URL), if docker_tools_install_completion=true."

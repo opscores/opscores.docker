@@ -1,0 +1,38 @@
+---
+# Meta information for docker_prerequisites role
+
+galaxy_info:
+  author: Alexey Gorynovich
+  description: Prepare system for Docker installation by installing prerequisites and removing conflicts.
+  license: GPL-3.0-or-later
+
+  min_ansible_version: '2.16'
+
+  platforms:
+    - name: AlmaLinux
+      versions:
+        - '9'
+        - '10'
+    - name: Rocky
+      versions:
+        - '9'
+        - '10'
+    - name: Fedora
+      versions:
+        - '43'
+    - name: Ubuntu
+      versions:
+        - '24.04'
+        - '26.04'
+    - name: Debian
+      versions:
+        - '12'
+        - '13'
+
+  galaxy_tags:
+    - docker
+    - prerequisites
+    - container
+    - system
+
+dependencies: []

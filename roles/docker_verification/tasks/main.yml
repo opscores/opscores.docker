@@ -1,0 +1,27 @@
+---
+# tasks file for docker_verification
+
+- name: Include preflight checks
+  ansible.builtin.include_tasks: preflight.yml
+
+- name: Check if OS is supported
+  ansible.builtin.fail:
+    msg: "Unsupported OS '{{ ansible_distribution }} {{ ansible_distribution_version }}'. Supported distributions: Ubuntu, Debian, AlmaLinux, Rocky, Fedora"
+  when: 
+    - ansible_distribution not in ['Ubuntu', 'Debian', 'AlmaLinux', 'Rocky', 'Fedora']
+
+- name: Verify Docker service status
+  ansible.builtin.include_tasks: verify-service.yml
+  when: docker_verification_check_service_status
+
+- name: Verify basic Docker commands
+  ansible.builtin.include_tasks: verify-commands.yml
+  when: docker_verification_check_basic_commands
+
+- name: Verify Docker plugins
+  ansible.builtin.include_tasks: verify-plugins.yml
+  when: docker_verification_check_plugins | length > 0
+
+- name: Verify Docker hello-world container
+  ansible.builtin.include_tasks: verify-container.yml
+  when: docker_verification_run_hello_world

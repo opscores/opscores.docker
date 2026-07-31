@@ -1,0 +1,5 @@
+---
+# Default variables for docker_engine role
+docker_engine_version: ""
+docker_engine_service_state: "started"
+docker_engine_service_enabled: true

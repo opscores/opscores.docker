@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  roles:
+    - role: docker_prerequisites
+    - role: docker_repository
+    - role: docker_engine
+    - role: docker_verification
+      docker_verification_check_plugins:
+        - compose
+        - buildx

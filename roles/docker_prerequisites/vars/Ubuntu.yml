@@ -1,0 +1,11 @@
+---
+# Variables for Ubuntu systems
+
+docker_ubuntu_packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - lsb-release
+  - slirp4netns
+  - fuse-overlayfs

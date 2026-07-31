@@ -1,0 +1,9 @@
+---
+# Variables for Ubuntu systems
+
+docker_ubuntu_repo_deps:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - lsb-release

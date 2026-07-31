@@ -1,0 +1,27 @@
+namespace: opscores
+name: docker
+version: 0.1.0
+readme: README.md
+authors:
+  - Alexey Gorynovich
+description: Ansible collection for Docker Engine and related tools management
+license:
+  - GPL-3.0-or-later
+tags:
+  - docker
+  - containers
+  - container
+  - infrastructure
+  - devops
+  - automation
+dependencies:
+  community.docker: ">=3.0.0"
+repository: https://github.com/opscores/ansible-collection-docker
+documentation: https://github.com/opscores/ansible-collection-docker
+homepage: https://github.com/opscores/ansible-collection-docker
+issues: https://github.com/opscores/ansible-collection-docker/issues
+build_ignore:
+  - '*.tar.gz'
+  - .github
+  - .gitignore
+  - tests/output

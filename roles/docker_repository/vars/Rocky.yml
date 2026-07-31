@@ -1,0 +1,7 @@
+---
+# Variables for Rocky systems
+
+docker_rocky_repo_deps:
+  - dnf-plugins-core
+  - ca-certificates
+  - yum-utils

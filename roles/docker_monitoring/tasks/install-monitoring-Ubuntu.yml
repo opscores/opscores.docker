@@ -1,0 +1,68 @@
+---
+# Install monitoring components for Ubuntu
+
+- name: Include Ubuntu-specific variables
+  ansible.builtin.include_vars: Ubuntu.yml
+  tags: [always]
+
+- name: Install additional packages if specified
+  ansible.builtin.package:
+    name: "{{ docker_monitoring_packages }}"
+    state: present
+  when: docker_monitoring_packages | length > 0
+  become: true
+
+- name: Install cAdvisor container
+  community.docker.docker_container:
+    name: cadvisor
+    image: gcr.io/cadvisor/cadvisor:v0.47.0
+    state: started
+    restart_policy: unless-stopped
+    ports:
+      - "{{ docker_monitoring_cadvisor_port }}:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    privileged: true
+  when: docker_monitoring_install_cadvisor
+  become: true
+
+- name: Install node_exporter package
+  ansible.builtin.package:
+    name: "{{ docker_node_exporter_package }}"
+    state: present
+  when: docker_monitoring_install_node_exporter
+  become: true
+
+- name: Ensure node_exporter service is running
+  ansible.builtin.systemd:
+    name: "{{ docker_node_exporter_service_name }}"
+    state: "{{ docker_monitoring_service_state }}"
+    enabled: "{{ docker_monitoring_service_enabled }}"
+  when:
+    - docker_monitoring_install_node_exporter
+    - docker_monitoring_service_state != "stopped"
+  become: true
+
+- name: Enable Docker daemon metrics via docker_configuration role
+  ansible.builtin.include_role:
+    name: opscores.docker.docker_configuration
+  vars:
+    docker_configuration_daemon_json: >-
+      {{
+        docker_configuration_daemon_json | default({})
+        | combine({
+          'metrics-addr': '0.0.0.0:' + docker_monitoring_docker_daemon_metrics_port | string,
+          'experimental': true
+        }, recursive=True)
+      }}
+    docker_configuration_mode: "merge"
+    docker_configuration_backup: true
+  when: docker_monitoring_install_docker_daemon_metrics
+
+- name: Print status of monitoring components installation
+  ansible.builtin.debug:
+    msg: "Monitoring components installed: cAdvisor={{ docker_monitoring_install_cadvisor }}, node_exporter={{ docker_monitoring_install_node_exporter }}, Docker daemon metrics={{ docker_monitoring_install_docker_daemon_metrics }}"

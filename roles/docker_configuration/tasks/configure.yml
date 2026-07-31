@@ -1,0 +1,105 @@
+---
+# Configure Docker daemon
+
+- name: Create /etc/docker directory if it doesn't exist
+  ansible.builtin.file:
+    path: /etc/docker
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root
+  become: true
+
+- name: Check if daemon.json exists
+  ansible.builtin.stat:
+    path: /etc/docker/daemon.json
+  register: daemon_json_stat
+  become: true
+
+- name: Backup daemon.json if it exists and backup is enabled
+  ansible.builtin.copy:
+    src: /etc/docker/daemon.json
+    dest: "/etc/docker/daemon.json.{{ '%Y-%m-%d-%H-%M-%S' | ansible.builtin.strftime }}"
+    remote_src: true
+    mode: '0644'
+  when:
+    - docker_configuration_backup
+    - daemon_json_stat.stat.exists
+  become: true
+
+- name: Read existing daemon.json content for merge mode
+  ansible.builtin.slurp:
+    src: /etc/docker/daemon.json
+  register: existing_daemon_json
+  when: docker_configuration_mode == "merge"
+  become: true
+  failed_when: false  # Allow failure if file doesn't exist
+
+- name: Validate existing daemon.json content
+  block:
+    - name: Decode and validate existing daemon.json content
+      ansible.builtin.set_fact:
+        existing_daemon_json_decoded: "{{ existing_daemon_json.content | b64decode | from_json }}"
+  rescue:
+    - name: Handle invalid daemon.json content
+      ansible.builtin.set_fact:
+        existing_daemon_json_decoded: {}
+  when:
+    - docker_configuration_mode == "merge"
+    - existing_daemon_json is succeeded
+    - existing_daemon_json.get('content') is defined
+    - existing_daemon_json.get('content', '') | length > 0
+
+- name: Set fact for merged configuration
+  ansible.builtin.set_fact:
+    final_daemon_config: >-
+      {{
+        (existing_daemon_json_decoded if existing_daemon_json_decoded is defined else {})
+        | combine(docker_configuration_daemon_json, recursive=True)
+      }}
+  when:
+    - docker_configuration_mode == "merge"
+    - existing_daemon_json is succeeded
+    - existing_daemon_json.get('content') is defined
+
+- name: Set fact for merged configuration when no existing daemon.json
+  ansible.builtin.set_fact:
+    final_daemon_config: "{{ docker_configuration_daemon_json }}"
+  when:
+    - docker_configuration_mode == "merge"
+    - (existing_daemon_json is failed or existing_daemon_json.get('content') is not defined)
+
+- name: Set fact for overwrite configuration
+  ansible.builtin.set_fact:
+    final_daemon_config: "{{ docker_configuration_daemon_json }}"
+  when: docker_configuration_mode == "overwrite"
+
+- name: Validate final daemon configuration JSON format
+  block:
+    - name: Serialize final daemon configuration to JSON
+      ansible.builtin.set_fact:
+        final_daemon_config_json: "{{ final_daemon_config | to_nice_json }}"
+  rescue:
+    - name: Fail on invalid daemon configuration
+      ansible.builtin.fail:
+        msg: "Invalid JSON format in docker_configuration_daemon_json"
+
+- name: Debug final_daemon_config content
+  ansible.builtin.debug:
+    msg: "Final daemon.json content: {{ final_daemon_config_json }}"
+  when: ansible_verbosity >= 2  # Only show when verbose mode is enabled
+
+- name: Write daemon.json configuration
+  ansible.builtin.copy:
+    content: "{{ final_daemon_config_json }}"
+    dest: /etc/docker/daemon.json
+    mode: '0644'
+    owner: root
+    group: root
+  notify: restart docker
+  register: daemon_json_result
+  become: true
+
+- name: Print daemon.json update status
+  ansible.builtin.debug:
+    msg: "daemon.json was {{ 'updated' if daemon_json_result.changed else 'not changed' }}"

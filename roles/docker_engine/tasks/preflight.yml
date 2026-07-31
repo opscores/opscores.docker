@@ -1,0 +1,43 @@
+---
+# Preflight checks for docker_engine role
+
+- name: Check if Docker repository is configured (RHEL-based systems)
+  ansible.builtin.stat:
+    path: /etc/yum.repos.d/docker-ce.repo
+  register: docker_repo_rhel
+  when: ansible_distribution in ["AlmaLinux", "Rocky", "Fedora"]
+
+- name: Check if Docker repository is configured (Debian-based systems)
+  ansible.builtin.stat:
+    path: /etc/apt/sources.list.d/docker.list
+  register: docker_repo_debian
+  when: ansible_distribution in ["Ubuntu", "Debian"]
+
+- name: Fail if Docker repository is not configured on RHEL-based systems
+  ansible.builtin.fail:
+    msg: "Docker repository is not configured. Please run the 'docker_repository' role first."
+  when:
+    - ansible_distribution in ["AlmaLinux", "Rocky", "Fedora"]
+    - not docker_repo_rhel.stat.exists
+
+- name: Fail if Docker repository is not configured on Debian-based systems
+  ansible.builtin.fail:
+    msg: "Docker repository is not configured. Please run the 'docker_repository' role first."
+  when:
+    - ansible_distribution in ["Ubuntu", "Debian"]
+    - not docker_repo_debian.stat.exists
+
+- name: Check if system architecture is supported
+  ansible.builtin.fail:
+    msg: "Unsupported architecture: {{ ansible_architecture }}"
+  when: ansible_architecture != "x86_64"
+
+- name: Check if OS is supported
+  ansible.builtin.fail:
+    msg: "Unsupported OS: {{ ansible_distribution }} {{ ansible_distribution_version }}"
+  when: >
+    (ansible_distribution not in ["Ubuntu", "Debian", "AlmaLinux", "Rocky", "Fedora"]) or
+    (ansible_distribution == "Ubuntu" and ansible_distribution_major_version not in ["24", "26"]) or
+    (ansible_distribution == "Debian" and ansible_distribution_major_version not in ["12", "13"]) or
+    (ansible_distribution in ["AlmaLinux", "Rocky"] and ansible_distribution_major_version not in ["9", "10"]) or
+    (ansible_distribution == "Fedora" and ansible_distribution_version != "43")

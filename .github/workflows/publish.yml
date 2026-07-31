@@ -1,0 +1,24 @@
+name: Publish to Galaxy
+on:
+  push:
+    branches: ['main']
+    tags: ['v*']
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Ansible
+        run: pip install ansible-core
+      - name: Build collection
+        run: ansible-galaxy collection build
+      - name: Publish to Galaxy
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          ansible-galaxy collection publish \
+            ./opscores-docker-*.tar.gz \
+            --api-key ${{ secrets.GALAXY_API_KEY }}

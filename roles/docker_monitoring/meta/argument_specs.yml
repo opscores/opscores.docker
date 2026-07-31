@@ -1,0 +1,72 @@
+---
+argument_specs:
+  main:
+    short_description: Setup and configure Docker monitoring infrastructure
+    description: Role to setup and configure Docker monitoring infrastructure on supported systems
+    options:
+      docker_monitoring_install_cadvisor:
+        type: "bool"
+        default: true
+        required: false
+        description: "Whether to install cAdvisor for container monitoring."
+      docker_monitoring_install_node_exporter:
+        type: "bool"
+        default: true
+        required: false
+        description: "Whether to install node_exporter for host metrics export."
+      docker_monitoring_install_docker_daemon_metrics:
+        type: "bool"
+        default: true
+        required: false
+        description: "Whether to enable Docker daemon metrics."
+      docker_monitoring_prepare_prometheus_config:
+        type: "bool"
+        default: true
+        required: false
+        description: "Whether to prepare configuration files for Prometheus."
+      docker_monitoring_prepare_grafana_dashboards:
+        type: "bool"
+        default: true
+        required: false
+        description: "Whether to prepare dashboards for Grafana."
+      docker_monitoring_packages:
+        type: "list"
+        default: []
+        required: false
+        description: "List of package names to install via apt/dnf."
+      docker_monitoring_prometheus_config_path:
+        type: "str"
+        default: "/etc/prometheus/targets/"
+        required: false
+        description: "Path to save Prometheus configuration files."
+      docker_monitoring_grafana_dashboards_path:
+        type: "str"
+        default: "/etc/grafana/dashboards/"
+        required: false
+        description: "Path to save Grafana dashboards."
+      docker_monitoring_cadvisor_port:
+        type: "int"
+        default: 8080
+        required: false
+        description: "Port on which cAdvisor will be running."
+      docker_monitoring_node_exporter_port:
+        type: "int"
+        default: 9100
+        required: false
+        description: "Port on which node_exporter will be running."
+      docker_monitoring_service_state:
+        type: "str"
+        default: "started"
+        required: false
+        description: "Desired state of monitoring services: started, stopped, restarted, reloaded"
+        choices: ["started", "stopped", "restarted", "reloaded"]
+      docker_monitoring_service_enabled:
+        type: "bool"
+        default: true
+        required: false
+        description: "Enable or disable monitoring services autostart on boot"
+      docker_monitoring_docker_daemon_metrics_port:
+        type: "int"
+        default: 9323
+        required: false
+        description: "Port on which Docker daemon metrics will be exposed."

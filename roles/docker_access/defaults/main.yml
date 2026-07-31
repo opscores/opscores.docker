@@ -1,0 +1,6 @@
+---
+# Default variables for docker_access role
+docker_access_users: []
+docker_access_ensure_group: true
+docker_access_manage_user_groups: true
+docker_access_group_name: "docker"

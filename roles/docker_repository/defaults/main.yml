@@ -1,0 +1,5 @@
+---
+# Default variables for docker_repository role
+docker_repository_channel: "stable"
+docker_repository_base_url: ""
+docker_repository_manage_repo: true

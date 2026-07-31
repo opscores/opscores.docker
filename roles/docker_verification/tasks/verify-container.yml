@@ -1,0 +1,47 @@
+---
+# Verify Docker hello-world container
+
+- name: Check if hello-world image exists
+  ansible.builtin.command: docker images hello-world --format '{{.Repository}}'
+  register: hello_world_image_check
+  changed_when: false
+  become: true
+  failed_when: false
+
+- name: Run Docker hello-world container
+  ansible.builtin.command: docker run hello-world
+  register: hello_world_result
+  changed_when: hello_world_image_check.stdout != "hello-world"
+  become: true
+  when: docker_verification_run_hello_world
+
+- name: Print hello-world output
+  ansible.builtin.debug:
+    msg: "Hello-world output: {{ hello_world_result.stdout_lines }}"
+  when:
+    - docker_verification_run_hello_world
+    - hello_world_result is succeeded
+    - hello_world_image_check.stdout != "hello-world"
+
+- name: Remove hello-world image if requested
+  ansible.builtin.command: docker rmi hello-world
+  register: remove_image_result
+  changed_when: hello_world_image_check.stdout == "hello-world"
+  become: true
+  when:
+    - docker_verification_remove_hello_world_image
+    - hello_world_image_check.stdout == "hello-world"
+
+- name: Print image removal status
+  ansible.builtin.debug:
+    msg: "Hello-world image removed: {{ remove_image_result is succeeded }}"
+  when:
+    - docker_verification_remove_hello_world_image
+    - hello_world_image_check.stdout == "hello-world"
+
+- name: Fail if hello-world container failed to run
+  ansible.builtin.fail:
+    msg: "Docker hello-world container failed to run"
+  when:
+    - docker_verification_run_hello_world
+    - hello_world_result is failed

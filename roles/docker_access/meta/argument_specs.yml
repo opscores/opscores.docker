@@ -1,0 +1,26 @@
+---
+argument_specs:
+  main:
+    short_description: Manage Docker access for users
+    description: Role to manage Docker access for users on supported systems
+    options:
+      docker_access_users:
+        type: "list"
+        default: []
+        required: false
+        description: "List of usernames to add to the docker group."
+      docker_access_ensure_group:
+        type: "bool"
+        default: true
+        required: false
+        description: "Whether to create the docker group if it does not exist."
+      docker_access_manage_user_groups:
+        type: "bool"
+        default: true
+        required: false
+        description: "Whether to perform adding users to the docker group."
+      docker_access_group_name:
+        type: "str"
+        default: "docker"
+        required: false
+        description: "Name of the group to which users will be added."

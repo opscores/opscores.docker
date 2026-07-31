@@ -1,0 +1,29 @@
+---
+# Playbook: install-docker-dev.yml
+# Purpose: Full installation for developers and CI agents.
+# Profile: Development / Testing
+
+- name: Install Docker for development
+  hosts: docker_dev_hosts
+  become: true
+  vars:
+    docker_plugins_list:
+      - compose
+      - buildx
+    docker_tools_packages:
+      - ctop
+    docker_tools_binaries:
+      dive:
+        url: "https://github.com/wagoodman/dive/releases/download/v0.13.1/dive_0.13.1_linux_amd64.tar.gz"
+        checksum: "sha256:0970549eb4a306f8825a84145a2534153badb4d7dcf3febd1967c706367c3d0e"
+        extract: true
+    docker_tools_install_completion: true
+    docker_verification_run_hello_world: true
+    docker_verification_remove_hello_world_image: true
+  roles:
+    - role: opscores.docker.docker_prerequisites
+    - role: opscores.docker.docker_repository
+    - role: opscores.docker.docker_engine
+    - role: opscores.docker.docker_plugins
+    - role: opscores.docker.docker_tools
+    - role: opscores.docker.docker_verification

@@ -1,0 +1,31 @@
+---
+argument_specs:
+  main:
+    short_description: Verify Docker installation
+    description: Role to verify Docker installation on supported systems
+    options:
+      docker_verification_run_hello_world:
+        type: "bool"
+        default: true
+        required: false
+        description: "Whether to run the hello-world test container."
+      docker_verification_check_service_status:
+        type: "bool"
+        default: true
+        required: false
+        description: "Whether to check the status of the docker service."
+      docker_verification_check_basic_commands:
+        type: "bool"
+        default: true
+        required: false
+        description: "Whether to execute docker version and docker info."
+      docker_verification_check_plugins:
+        type: "list"
+        default: []
+        required: false
+        description: "List of plugins to check (e.g., ['compose', 'buildx']). Determines which commands to execute."
+      docker_verification_remove_hello_world_image:
+        type: "bool"
+        default: false
+        required: false
+        description: "Whether to remove the hello-world image after verification."

@@ -1,0 +1,50 @@
+---
+# Installation tasks for Fedora for docker_prerequisites role
+
+# Include Fedora-specific variables
+- name: Include Fedora-specific variables
+  ansible.builtin.include_vars: Fedora.yml
+  tags: [always]
+
+# Install bash completion if requested
+- name: Install bash completion for Docker (Fedora)
+  ansible.builtin.package:
+    name: bash-completion
+    state: present
+  become: true
+  when: docker_prerequisites_install_completion | default(false)
+
+# Install system prerequisites for Docker
+- name: Install system prerequisites for Docker (Fedora)
+  ansible.builtin.package:
+    name: "{{ docker_fedora_packages }}"
+    state: present
+
+# Check and disable/remove conflicting services/packages (e.g., podman)
+- name: Gather list of installed conflicting packages (Fedora)
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: Uninstall podman if installed (remove conflict)
+  ansible.builtin.package:
+    name: podman
+    state: absent
+  when:
+    - docker_prerequisites_remove_conflicts | bool
+    - "'podman' in ansible_facts.packages"
+
+- name: Uninstall podman-docker if installed (remove conflict)
+  ansible.builtin.package:
+    name: podman-docker
+    state: absent
+  when:
+    - docker_prerequisites_remove_conflicts | bool
+    - "'podman-docker' in ansible_facts.packages"
+
+- name: Uninstall older docker-io if installed (remove conflict)
+  ansible.builtin.package:
+    name: docker-io
+    state: absent
+  when:
+    - docker_prerequisites_remove_conflicts | bool
+    - "'docker-io' in ansible_facts.packages"

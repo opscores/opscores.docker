@@ -1,0 +1,12 @@
+---
+# Variables for Fedora systems
+
+docker_fedora_packages:
+  - curl
+  - gnupg
+  - dnf-plugins-core
+  - container-selinux
+  - slirp4netns
+  - fuse-overlayfs
+  - system-release
+  - selinux-policy

@@ -1,0 +1,21 @@
+---
+argument_specs:
+  main:
+    short_description: Configure official Docker repository
+    description: Role to configure official Docker repository on supported systems
+    options:
+      docker_repository_channel:
+        type: "str"
+        default: "stable"
+        required: false
+        description: "Repository channel for installation: stable, test, nightly"
+      docker_repository_base_url:
+        type: "str"
+        default: ""
+        required: false
+        description: "Override the official repository URL (e.g., for local mirror)"
+      docker_repository_manage_repo:
+        type: "bool"
+        default: true
+        required: false
+        description: "If false, skip repository configuration (useful for corporate environments)"

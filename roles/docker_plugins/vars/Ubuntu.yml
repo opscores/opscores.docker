@@ -1,0 +1,8 @@
+---
+# Variables for Ubuntu systems
+
+docker_ubuntu_plugin_packages:
+  - name: "compose"
+    pkg: "docker-compose-plugin"
+  - name: "buildx"
+    pkg: "docker-buildx-plugin"

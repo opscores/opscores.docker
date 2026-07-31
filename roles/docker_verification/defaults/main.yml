@@ -1,0 +1,7 @@
+---
+# Default variables for docker_verification role
+docker_verification_run_hello_world: true
+docker_verification_check_service_status: true
+docker_verification_check_basic_commands: true
+docker_verification_check_plugins: []
+docker_verification_remove_hello_world_image: false

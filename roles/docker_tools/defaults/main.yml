@@ -1,0 +1,7 @@
+---
+# Default variables for docker_tools role
+docker_tools_packages: []
+docker_tools_binaries: {}
+docker_tools_install_completion: false
+docker_tools_binary_directory: "/usr/local/bin"
+docker_tools_completion_file_source: ""

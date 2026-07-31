@@ -1,0 +1,11 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  roles:
+    - role: docker_prerequisites
+    - role: docker_repository
+    - role: docker_engine
+    - role: docker_access
+      docker_access_users:
+        - testuser

@@ -1,0 +1,11 @@
+---
+# Playbook: manage-docker-access.yml
+# Purpose: Idempotent management of Docker socket access.
+
+- name: Manage Docker access
+  hosts: docker_hosts
+  become: true
+  vars:
+    docker_access_users: []
+  roles:
+    - role: opscores.docker.docker_access

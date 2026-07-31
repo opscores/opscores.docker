@@ -1,0 +1,9 @@
+---
+# Variables for Debian systems
+
+docker_debian_repo_deps:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - lsb-release

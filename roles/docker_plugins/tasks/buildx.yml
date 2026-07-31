@@ -1,0 +1,20 @@
+---
+# Configure Docker buildx instance
+
+- name: Create and use Docker buildx instance
+  ansible.builtin.command: docker buildx create --name {{ docker_plugins_buildx_instance_name }} --use
+  register: buildx_create_result
+  changed_when: buildx_create_result.rc == 0
+  become: true
+  # Ignore errors if the builder already exists
+  ignore_errors: true
+
+- name: Check current Docker buildx builder
+  ansible.builtin.command: docker buildx ls
+  register: buildx_ls_result
+  changed_when: false
+  become: true
+
+- name: Print available buildx builders
+  ansible.builtin.debug:
+    msg: "Available buildx builders: {{ buildx_ls_result.stdout }}"

@@ -1,0 +1,8 @@
+---
+# Variables for Debian systems
+
+docker_debian_plugin_packages:
+  - name: "compose"
+    pkg: "docker-compose-plugin"
+  - name: "buildx"
+    pkg: "docker-buildx-plugin"

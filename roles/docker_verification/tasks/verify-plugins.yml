@@ -1,0 +1,46 @@
+---
+# Verify Docker plugins
+
+- name: Check Docker Compose plugin
+  ansible.builtin.command: docker compose version
+  register: docker_compose_result
+  changed_when: false
+  become: true
+  when: "'compose' in docker_verification_check_plugins"
+  ignore_errors: true
+
+- name: Print Docker Compose version
+  ansible.builtin.debug:
+    msg: "Docker Compose version: {{ docker_compose_result.stdout }}"
+  when: 
+    - "'compose' in docker_verification_check_plugins"
+    - docker_compose_result is succeeded
+
+- name: Fail if Docker Compose plugin check failed
+  ansible.builtin.fail:
+    msg: "Docker Compose plugin check failed"
+  when: 
+    - "'compose' in docker_verification_check_plugins"
+    - docker_compose_result is failed
+
+- name: Check Docker Buildx plugin
+  ansible.builtin.command: docker buildx version
+  register: docker_buildx_result
+  changed_when: false
+  become: true
+  when: "'buildx' in docker_verification_check_plugins"
+  ignore_errors: true
+
+- name: Print Docker Buildx version
+  ansible.builtin.debug:
+    msg: "Docker Buildx version: {{ docker_buildx_result.stdout }}"
+  when: 
+    - "'buildx' in docker_verification_check_plugins"
+    - docker_buildx_result is succeeded
+
+- name: Fail if Docker Buildx plugin check failed
+  ansible.builtin.fail:
+    msg: "Docker Buildx plugin check failed"
+  when: 
+    - "'buildx' in docker_verification_check_plugins"
+    - docker_buildx_result is failed

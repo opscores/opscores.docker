@@ -1,0 +1,39 @@
+---
+# Preflight checks for docker_plugins role
+
+- name: Check if Docker Engine binary exists
+  ansible.builtin.stat:
+    path: /usr/bin/docker
+  register: docker_binary
+
+- name: Fail if Docker Engine is not installed
+  ansible.builtin.fail:
+    msg: "Docker Engine is not installed. Please run the 'docker_engine' role first."
+  when: not docker_binary.stat.exists
+
+- name: Check if Docker service is running
+  ansible.builtin.command: systemctl is-active docker
+  register: docker_service_status
+  failed_when: false
+  changed_when: false
+  become: true
+
+- name: Fail if Docker service is not active
+  ansible.builtin.fail:
+    msg: "Docker service is not running. Please ensure the 'docker_engine' role has started the service."
+  when: docker_service_status.stdout != "active"
+
+- name: Check if system architecture is supported
+  ansible.builtin.fail:
+    msg: "Unsupported architecture: {{ ansible_architecture }}"
+  when: ansible_architecture != "x86_64"
+
+- name: Check if OS is supported
+  ansible.builtin.fail:
+    msg: "Unsupported OS: {{ ansible_distribution }} {{ ansible_distribution_version }}"
+  when: >
+    (ansible_distribution not in ["Ubuntu", "Debian", "AlmaLinux", "Rocky", "Fedora"]) or
+    (ansible_distribution == "Ubuntu" and ansible_distribution_major_version not in ["24", "26"]) or
+    (ansible_distribution == "Debian" and ansible_distribution_major_version not in ["12", "13"]) or
+    (ansible_distribution in ["AlmaLinux", "Rocky"] and ansible_distribution_major_version not in ["9", "10"]) or
+    (ansible_distribution == "Fedora" and ansible_distribution_version != "43")

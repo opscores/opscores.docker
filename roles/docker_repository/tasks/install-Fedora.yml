@@ -1,0 +1,43 @@
+---
+# Install Docker repository for Fedora
+
+- name: Include Fedora-specific variables
+  ansible.builtin.include_vars: Fedora.yml
+  tags: [always]
+
+- name: Set base URL for Docker repository
+  ansible.builtin.set_fact:
+    docker_repo_base_url: "{{ docker_repository_base_url if docker_repository_base_url else 'https://download.docker.com' }}"
+  when: docker_repository_manage_repo
+
+- name: Set distro code for Fedora
+  ansible.builtin.set_fact:
+    docker_distro_code: "fedora"
+  when: docker_repository_manage_repo
+
+- name: Install dnf-plugins-core for Fedora systems
+  ansible.builtin.package:
+    name: "{{ docker_fedora_repo_deps }}"
+    state: present
+  when: docker_repository_manage_repo
+
+- name: Create Docker repository file for Fedora
+  ansible.builtin.copy:
+    content: |
+      [docker-ce-stable]
+      name=Docker CE Stable - $basearch
+      baseurl={{ docker_repo_base_url }}/linux/{{ docker_distro_code }}/$releasever/$basearch/stable
+      enabled=1
+      gpgcheck=1
+      gpgkey=https://download.docker.com/linux/{{ docker_distro_code }}/gpg
+    dest: "/etc/yum.repos.d/docker-ce-stable.repo"
+    mode: '0644'
+    owner: root
+    group: root
+  become: true
+  when: docker_repository_manage_repo
+
+- name: Update repository cache
+  ansible.builtin.dnf:
+    update_cache: true
+  when: docker_repository_manage_repo

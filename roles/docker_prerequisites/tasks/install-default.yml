@@ -1,0 +1,5 @@
+---
+# Fallback file for unsupported OS families
+- name: Fail on unsupported OS family
+  ansible.builtin.fail:
+    msg: "Unsupported OS Family '{{ ansible_os_family }}'. This role supports RedHat and Debian families."

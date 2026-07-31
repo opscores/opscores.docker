@@ -1,0 +1,6 @@
+---
+# Default variables for docker_configuration role
+docker_configuration_daemon_json: {}
+docker_configuration_backup: true
+docker_configuration_mode: "overwrite"
+docker_configuration_notify_restart: true

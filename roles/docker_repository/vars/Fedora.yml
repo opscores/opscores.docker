@@ -1,0 +1,8 @@
+---
+# Variables for Fedora systems
+
+docker_fedora_repo_deps:
+  - dnf-plugins-core
+  - ca-certificates
+  - gpg
+  - system-release-common

@@ -1,0 +1,14 @@
+---
+# Install package tools
+
+- name: Install package tools
+  ansible.builtin.package:
+    name: "{{ docker_tools_packages }}"
+    state: present
+  become: true
+  register: package_install_result
+
+- name: Print installed packages
+  ansible.builtin.debug:
+    msg: "Installed packages: {{ docker_tools_packages }}"
+  when: package_install_result is changed

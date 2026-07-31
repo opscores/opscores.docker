@@ -1,0 +1,31 @@
+---
+# tasks file for docker_repository
+
+- name: Include preflight checks
+  ansible.builtin.include_tasks: preflight.yml
+
+- name: Check if OS is supported
+  ansible.builtin.fail:
+    msg: "Unsupported OS '{{ ansible_distribution }} {{ ansible_distribution_version }}'. Supported distributions: Ubuntu, Debian, AlmaLinux, Rocky, Fedora"
+  when:
+    - ansible_distribution not in ['Ubuntu', 'Debian', 'AlmaLinux', 'Rocky', 'Fedora']
+
+- name: Include Ubuntu-specific installation tasks
+  ansible.builtin.include_tasks: install-Ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Include Debian-specific installation tasks
+  ansible.builtin.include_tasks: install-Debian.yml
+  when: ansible_distribution == 'Debian'
+
+- name: Include AlmaLinux-specific installation tasks
+  ansible.builtin.include_tasks: install-AlmaLinux.yml
+  when: ansible_distribution == 'AlmaLinux'
+
+- name: Include Rocky-specific installation tasks
+  ansible.builtin.include_tasks: install-Rocky.yml
+  when: ansible_distribution == 'Rocky'
+
+- name: Include Fedora-specific installation tasks
+  ansible.builtin.include_tasks: install-Fedora.yml
+  when: ansible_distribution == 'Fedora'

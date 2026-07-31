@@ -1,0 +1,30 @@
+---
+# tasks file for docker_tools
+
+- name: Include preflight checks
+  ansible.builtin.include_tasks: preflight.yml
+
+- name: Check if OS is supported
+  ansible.builtin.fail:
+    msg: "Unsupported OS '{{ ansible_distribution }} {{ ansible_distribution_version }}'. Supported distributions: Ubuntu, Debian, AlmaLinux, Rocky, Fedora"
+  when: 
+    - ansible_distribution not in ['Ubuntu', 'Debian', 'AlmaLinux', 'Rocky', 'Fedora']
+
+- name: Install package tools
+  ansible.builtin.include_tasks: install-packages.yml
+  when: docker_tools_packages | length > 0
+
+- name: Install binary tools
+  ansible.builtin.include_tasks: install-binaries.yml
+  when: docker_tools_binaries | length > 0
+
+- name: Install bash completion package
+  ansible.builtin.package:
+    name: "{{ 'bash-completion' if ansible_distribution in ['Ubuntu', 'Debian'] else 'bash-completion' }}"
+    state: present
+  become: true
+  when: docker_tools_install_completion
+
+- name: Configure bash completion
+  ansible.builtin.include_tasks: configure-completion.yml
+  when: docker_tools_install_completion

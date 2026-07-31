@@ -1,0 +1,29 @@
+---
+# Playbook: install-docker-production.yml
+# Purpose: Full production installation on a single host.
+# Profile: Production Single-Instance
+
+- name: Install Docker for production environment
+  hosts: docker_prod_hosts
+  become: true
+  vars:
+    docker_configuration_mode: "merge"
+    docker_configuration_backup: true
+    docker_access_users: []
+    docker_verification_run_hello_world: true
+    docker_verification_remove_hello_world_image: true
+    docker_monitoring_install_cadvisor: true
+    docker_monitoring_install_node_exporter: true
+    docker_monitoring_install_docker_daemon_metrics: true
+    docker_monitoring_prepare_prometheus_config: true
+    docker_monitoring_prepare_grafana_dashboards: true
+  roles:
+    - role: opscores.docker.docker_prerequisites
+    - role: opscores.docker.docker_repository
+    - role: opscores.docker.docker_engine
+    - role: opscores.docker.docker_plugins
+    - role: opscores.docker.docker_configuration
+    - role: opscores.docker.docker_access
+    - role: opscores.docker.docker_tools
+    - role: opscores.docker.docker_monitoring
+    - role: opscores.docker.docker_verification

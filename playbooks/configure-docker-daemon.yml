@@ -1,0 +1,13 @@
+---
+# Playbook: configure-docker-daemon.yml
+# Purpose: Update or configure daemon.json without reinstalling Docker.
+
+- name: Configure Docker daemon settings
+  hosts: docker_hosts
+  become: true
+  vars:
+    docker_configuration_daemon_json: {}
+    docker_configuration_mode: "overwrite"
+    docker_configuration_backup: true
+  roles:
+    - role: opscores.docker.docker_configuration

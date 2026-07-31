@@ -1,0 +1,8 @@
+---
+# Variables for Debian systems
+
+docker_monitoring_packages:
+  - prometheus-node-exporter
+
+docker_node_exporter_package: prometheus-node-exporter
+docker_node_exporter_service_name: prometheus-node-exporter

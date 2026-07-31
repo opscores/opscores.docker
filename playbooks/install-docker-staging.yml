@@ -1,0 +1,32 @@
+---
+# Playbook: install-docker-staging.yml
+# Purpose: Pre-production environment with secure configuration and audit.
+# Profile: Staging
+
+- name: Install Docker for pre-production environment
+  hosts: docker_staging_hosts
+  become: true
+  vars:
+    docker_configuration_daemon_json:
+      default-ulimits:
+        "nofile": "1024:4096"
+      log-driver: "json-file"
+      log-opts:
+        "max-size": "10m"
+        "max-file": "3"
+      iptables: false
+      live-restore: false
+    docker_configuration_mode: "overwrite"
+    docker_configuration_backup: true
+    docker_access_users: []
+    docker_verification_run_hello_world: true
+    docker_verification_remove_hello_world_image: true
+  roles:
+    - role: opscores.docker.docker_prerequisites
+    - role: opscores.docker.docker_repository
+    - role: opscores.docker.docker_engine
+    - role: opscores.docker.docker_plugins
+    - role: opscores.docker.docker_configuration
+    - role: opscores.docker.docker_access
+    - role: opscores.docker.docker_tools
+    - role: opscores.docker.docker_verification

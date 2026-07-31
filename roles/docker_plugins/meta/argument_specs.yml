@@ -1,0 +1,31 @@
+---
+argument_specs:
+  main:
+    short_description: Install Docker plugins
+    description: Role to install Docker plugins on supported systems
+    options:
+      docker_plugins_list:
+        type: "list"
+        default: ["compose", "buildx"]
+        required: false
+        description: "List of plugins to install (e.g., compose, buildx, scan)"
+      docker_plugins_versions:
+        type: "dict"
+        default: {}
+        required: false
+        description: "Dictionary of versions for specific plugins. Example: {'compose': '2.21.0', 'buildx': '0.14.0'}"
+      docker_plugins_create_buildx_instance:
+        type: "bool"
+        default: false
+        required: false
+        description: "Create and use (use) default buildx instance"
+      docker_plugins_buildx_instance_name:
+        type: "str"
+        default: "default"
+        required: false
+        description: "Name for the buildx instance to create (only if docker_plugins_create_buildx_instance: true)"
+      docker_plugins_install_additional_packages:
+        type: "list"
+        default: []
+        required: false
+        description: "Additional system packages needed for plugins (e.g., git)"

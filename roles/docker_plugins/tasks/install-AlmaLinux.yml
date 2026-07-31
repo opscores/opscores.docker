@@ -1,0 +1,53 @@
+---
+# Install Docker plugins for AlmaLinux
+
+- name: Include AlmaLinux-specific variables
+  ansible.builtin.include_vars: AlmaLinux.yml
+  tags: [always]
+
+- name: Install additional packages if specified
+  ansible.builtin.package:
+    name: "{{ docker_plugins_install_additional_packages }}"
+    state: present
+  when: docker_plugins_install_additional_packages | length > 0
+  become: true
+
+- name: Determine plugin packages to install
+  ansible.builtin.set_fact:
+    plugin_packages: "{{ docker_almalinux_plugin_packages | selectattr('name', 'in', docker_plugins_list) | map(attribute='pkg') | list }}"
+
+- name: Install Docker plugins
+  ansible.builtin.package:
+    name: "{{ plugin_packages }}"
+    state: present
+  become: true
+
+- name: Verify Docker Compose plugin installation
+  ansible.builtin.command: docker compose version
+  register: docker_compose_version
+  changed_when: false
+  become: true
+  when: "'compose' in docker_plugins_list"
+  ignore_errors: true
+
+- name: Print Docker Compose version
+  ansible.builtin.debug:
+    msg: "Docker Compose version: {{ docker_compose_version.stdout }}"
+  when:
+    - "'compose' in docker_plugins_list"
+    - docker_compose_version is succeeded
+
+- name: Verify Docker Buildx plugin installation
+  ansible.builtin.command: docker buildx version
+  register: docker_buildx_version
+  changed_when: false
+  become: true
+  when: "'buildx' in docker_plugins_list"
+  ignore_errors: true
+
+- name: Print Docker Buildx version
+  ansible.builtin.debug:
+    msg: "Docker Buildx version: {{ docker_buildx_version.stdout }}"
+  when:
+    - "'buildx' in docker_plugins_list"
+    - docker_buildx_version is succeeded

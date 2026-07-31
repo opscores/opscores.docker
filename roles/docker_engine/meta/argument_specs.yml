@@ -1,0 +1,22 @@
+---
+argument_specs:
+  main:
+    short_description: Install Docker Engine
+    description: Role to install Docker Engine on supported systems
+    options:
+      docker_engine_version:
+        type: "str"
+        default: ""
+        required: false
+        description: "Specific Docker Engine version to install (e.g., 24.0.7). If empty, installs latest."
+      docker_engine_service_state:
+        type: "str"
+        default: "started"
+        required: false
+        description: "Desired state of the docker service: started, stopped, restarted, reloaded"
+        choices: ["started", "stopped", "restarted", "reloaded"]
+      docker_engine_service_enabled:
+        type: "bool"
+        default: true
+        required: false
+        description: "Enable or disable docker service autostart on boot"

@@ -1,0 +1,47 @@
+---
+# Install binary tools
+
+- name: Create binary directory if it doesn't exist
+  ansible.builtin.file:
+    path: "{{ docker_tools_binary_directory }}"
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root
+  become: true
+
+- name: Download and extract archive-based binary tools
+  ansible.builtin.unarchive:
+    src: "{{ item.value.url }}"
+    dest: "{{ docker_tools_binary_directory }}"
+    remote_src: true
+    owner: root
+    group: root
+    mode: '0755'
+    checksum: "{{ 'sha256:' + item.value.checksum if item.value.checksum else omit }}"
+    exclude:
+      - "CHANGELOG.md"
+      - "LICENSE"
+      - "README.md"
+    creates: "{{ docker_tools_binary_directory }}/{{ item.key }}"
+  loop: "{{ docker_tools_binaries | dict2items }}"
+  when: item.value.get('extract', false)
+  become: true
+  register: archive_install_result
+
+- name: Download and install single-file binary tools
+  ansible.builtin.get_url:
+    url: "{{ item.value.url }}"
+    dest: "{{ docker_tools_binary_directory }}/{{ item.key }}"
+    mode: '0755'
+    owner: root
+    group: root
+    checksum: "{{ 'sha256:' + item.value.checksum if item.value.checksum else omit }}"
+  loop: "{{ docker_tools_binaries | dict2items }}"
+  when: not item.value.get('extract', false)
+  become: true
+  register: single_binary_install_result
+
+- name: Print installed binary tools
+  ansible.builtin.debug:
+    msg: "Installed binary tools: {{ docker_tools_binaries.keys() | list }}"

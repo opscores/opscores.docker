@@ -1,0 +1,7 @@
+---
+# Default variables for docker_plugins role
+docker_plugins_list: ['compose', 'buildx']
+docker_plugins_versions: {}
+docker_plugins_create_buildx_instance: false
+docker_plugins_buildx_instance_name: "default"
+docker_plugins_install_additional_packages: []

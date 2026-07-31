@@ -1,0 +1,27 @@
+---
+argument_specs:
+  main:
+    short_description: Manage Docker daemon configuration
+    description: Role to manage Docker daemon configuration on supported systems
+    options:
+      docker_configuration_daemon_json:
+        type: "dict"
+        default: {}
+        required: false
+        description: "Dictionary of parameters for /etc/docker/daemon.json file"
+      docker_configuration_backup:
+        type: "bool"
+        default: true
+        required: false
+        description: "Whether to create a backup of daemon.json before modification"
+      docker_configuration_mode:
+        type: "str"
+        default: "overwrite"
+        required: false
+        description: "Configuration management mode: 'overwrite' (overwrite) or 'merge' (merge)"
+        choices: ["overwrite", "merge"]
+      docker_configuration_notify_restart:
+        type: "bool"
+        default: true
+        required: false
+        description: "Whether to restart Docker service via handler if daemon.json file changed"

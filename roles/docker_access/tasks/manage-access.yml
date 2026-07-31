@@ -1,0 +1,40 @@
+---
+# Manage Docker access for users
+
+- name: Ensure docker group exists
+  ansible.builtin.group:
+    name: "{{ docker_access_group_name }}"
+    state: present
+  become: true
+  when: docker_access_ensure_group
+
+- name: Check if users exist before adding to group
+  ansible.builtin.getent:
+    database: passwd
+    key: "{{ item }}"
+    split: ':'
+  loop: "{{ docker_access_users }}"
+  become: true
+  when:
+    - docker_access_manage_user_groups
+    - docker_access_users | length > 0
+  ignore_errors: true
+
+- name: Add users to docker group
+  ansible.builtin.user:
+    name: "{{ item }}"
+    groups: "{{ docker_access_group_name }}"
+    append: true
+  loop: "{{ docker_access_users }}"
+  become: true
+  when:
+    - docker_access_manage_user_groups
+    - docker_access_users | length > 0
+  register: user_group_result
+
+- name: Print users added to docker group
+  ansible.builtin.debug:
+    msg: "Added users {{ docker_access_users }} to {{ docker_access_group_name }} group"
+  when:
+    - user_group_result is succeeded
+    - docker_access_users | length > 0

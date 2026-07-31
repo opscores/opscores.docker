@@ -1,0 +1,16 @@
+---
+# Handlers for docker_engine role
+
+- name: Restart docker
+  ansible.builtin.service:
+    name: docker
+    state: restarted
+  become: true
+  listen: "restart docker"
+
+- name: Stop docker
+  ansible.builtin.service:
+    name: docker
+    state: stopped
+  become: true
+  listen: "stop docker"

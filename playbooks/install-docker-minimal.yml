@@ -1,0 +1,16 @@
+---
+# Playbook: install-docker-minimal.yml
+# Purpose: Minimal secure Docker Engine installation with no extra components.
+# Profile: Production Minimal
+
+- name: Minimal Docker Engine installation
+  hosts: docker_hosts
+  become: true
+  vars:
+    docker_verification_run_hello_world: false
+    docker_verification_remove_hello_world_image: true
+  roles:
+    - role: opscores.docker.docker_prerequisites
+    - role: opscores.docker.docker_repository
+    - role: opscores.docker.docker_engine
+    - role: opscores.docker.docker_verification

@@ -1,0 +1,14 @@
+---
+# Preflight checks for docker_prerequisites role
+
+# Check minimum RAM requirement (1024 MB)
+- name: Check minimum RAM requirement (1024 MB)
+  ansible.builtin.fail:
+    msg: "System does not meet minimum RAM requirement of 1024 MB. Available: {{ ansible_memtotal_mb }} MB"
+  when: ansible_memtotal_mb < 1024
+
+# Check architecture (assuming x86-64 as per spec)
+- name: Check if architecture is x86-64
+  ansible.builtin.fail:
+    msg: "Unsupported architecture: {{ ansible_architecture }}. Only x86-64 is supported."
+  when: ansible_architecture != 'x86_64'

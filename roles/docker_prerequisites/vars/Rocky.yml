@@ -1,0 +1,11 @@
+---
+# Variables for Rocky systems
+
+docker_rocky_packages:
+  - curl
+  - gnupg
+  - dnf-utils
+  - yum-utils
+  - container-selinux
+  - slirp4netns
+  - fuse-overlayfs

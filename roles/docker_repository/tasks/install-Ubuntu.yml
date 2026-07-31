@@ -1,0 +1,54 @@
+---
+# Install Docker repository for Ubuntu
+
+- name: Include Ubuntu-specific variables
+  ansible.builtin.include_vars: Ubuntu.yml
+  tags: [always]
+
+- name: Set base URL for Docker repository
+  ansible.builtin.set_fact:
+    docker_repo_base_url: "{{ docker_repository_base_url if docker_repository_base_url else 'https://download.docker.com' }}"
+  when: docker_repository_manage_repo
+
+- name: Set distro code for Ubuntu
+  ansible.builtin.set_fact:
+    docker_distro_code: "ubuntu"
+  when: docker_repository_manage_repo
+
+- name: Install repository dependencies
+  ansible.builtin.package:
+    name: "{{ docker_ubuntu_repo_deps }}"
+    state: present
+  when: docker_repository_manage_repo
+
+- name: Create apt keyrings directory
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+  when: docker_repository_manage_repo
+
+- name: Download Docker GPG key
+  ansible.builtin.get_url:
+    url: "{{ docker_repo_base_url }}/linux/{{ docker_distro_code }}/gpg"
+    dest: /etc/apt/keyrings/docker.asc
+    mode: '0644'
+    force: true
+  when: docker_repository_manage_repo
+
+- name: Add Docker repository in deb822 format
+  ansible.builtin.copy:
+    content: |
+      Types: deb
+      URIs: {{ docker_repo_base_url }}/linux/{{ docker_distro_code }}
+      Suites: {{ ansible_distribution_release }}
+      Components: {{ docker_repository_channel }}
+      Signed-By: /etc/apt/keyrings/docker.asc
+    dest: /etc/apt/sources.list.d/docker.list
+    mode: '0644'
+  when: docker_repository_manage_repo
+
+- name: Update repository cache
+  ansible.builtin.package:
+    update_cache: true
+  when: docker_repository_manage_repo

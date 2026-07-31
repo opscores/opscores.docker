@@ -1,0 +1,11 @@
+---
+# Variables for AlmaLinux systems
+
+docker_almalinux_packages:
+  - curl
+  - gnupg
+  - dnf-utils
+  - yum-utils
+  - container-selinux
+  - slirp4netns
+  - fuse-overlayfs
