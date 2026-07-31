@@ -29,3 +29,13 @@ argument_specs:
         default: ""
         required: false
         description: "Path to bash completion file (local in role or URL), if docker_tools_install_completion=true."
+      docker_tools_download_retries:
+        type: "int"
+        default: 3
+        required: false
+        description: "Number of retries for downloading binary tools and checking URL availability."
+      docker_tools_download_delay:
+        type: "int"
+        default: 5
+        required: false
+        description: "Delay in seconds between download retries."

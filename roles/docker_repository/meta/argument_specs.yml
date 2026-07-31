@@ -19,3 +19,11 @@ argument_specs:
         default: true
         required: false
         description: "If false, skip repository configuration (useful for corporate environments)"
+      docker_repository_gpg_key_checksum:
+        type: "str"
+        default: >-
+          sha256:1500c1f56fa9e26b9b8f42452a553675796ade0807cdce11975eb98170b3a570
+        required: false
+        description: >-
+          Checksum for the downloaded Docker GPG key to prevent MITM attacks.
+          Set to empty string when using a custom base URL with a different key.

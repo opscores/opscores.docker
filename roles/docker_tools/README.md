@@ -21,6 +21,8 @@ This role installs Docker auxiliary tools on supported systems.
 | `docker_tools_install_completion` | boolean | `false` | Whether to install bash completion for docker. |
 | `docker_tools_binary_directory` | string | `"/usr/local/bin"` | Directory for installing binary files. |
 | `docker_tools_completion_file_source` | string | `""` | Path to bash completion file (local in role or URL), if docker_tools_install_completion=true. |
+| `docker_tools_download_retries` | int | `3` | Number of retries for downloading binary tools and checking URL availability. |
+| `docker_tools_download_delay` | int | `5` | Delay in seconds between download retries. |
 
 ## Example Playbook
 

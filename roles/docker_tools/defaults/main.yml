@@ -5,3 +5,5 @@ docker_tools_binaries: {}
 docker_tools_install_completion: false
 docker_tools_binary_directory: "/usr/local/bin"
 docker_tools_completion_file_source: ""
+docker_tools_download_retries: 3
+docker_tools_download_delay: 5

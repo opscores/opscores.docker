@@ -18,6 +18,7 @@ This role configures the official Docker repository on supported systems.
 | `docker_repository_channel` | string | `"stable"` | Repository channel for installation: `stable`, `test`, `nightly` |
 | `docker_repository_base_url` | string | `""` | Override the official repository URL (e.g., for local mirror) |
 | `docker_repository_manage_repo` | boolean | `true` | If false, skip repository configuration (useful for corporate environments) |
+| `docker_repository_gpg_key_checksum` | string | `sha256:1500c1f5...` | Checksum for the downloaded Docker GPG key (MITM protection). Set to `""` when using a custom base URL with a different key. |
 
 ## Example Playbook
 

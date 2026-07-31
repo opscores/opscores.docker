@@ -34,6 +34,7 @@
     dest: /etc/apt/keyrings/docker.asc
     mode: '0644'
     force: true
+    checksum: "{{ docker_repository_gpg_key_checksum if docker_repository_gpg_key_checksum else omit }}"
   when: docker_repository_manage_repo
 
 - name: Add Docker repository in deb822 format

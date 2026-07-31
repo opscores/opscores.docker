@@ -10,6 +10,17 @@
     group: root
   become: true
 
+- name: Check binary download URLs are reachable
+  ansible.builtin.uri:
+    url: "{{ item.value.url }}"
+    method: HEAD
+    status_code: 200
+  loop: "{{ docker_tools_binaries | dict2items }}"
+  retries: "{{ docker_tools_download_retries }}"
+  delay: "{{ docker_tools_download_delay }}"
+  until: url_check_result is succeeded
+  register: url_check_result
+
 - name: Download and extract archive-based binary tools
   ansible.builtin.unarchive:
     src: "{{ item.value.url }}"
@@ -26,6 +37,9 @@
     creates: "{{ docker_tools_binary_directory }}/{{ item.key }}"
   loop: "{{ docker_tools_binaries | dict2items }}"
   when: item.value.get('extract', false)
+  retries: "{{ docker_tools_download_retries }}"
+  delay: "{{ docker_tools_download_delay }}"
+  until: archive_install_result is succeeded
   become: true
   register: archive_install_result
 
@@ -39,6 +53,9 @@
     checksum: "{{ 'sha256:' + item.value.checksum if item.value.checksum else omit }}"
   loop: "{{ docker_tools_binaries | dict2items }}"
   when: not item.value.get('extract', false)
+  retries: "{{ docker_tools_download_retries }}"
+  delay: "{{ docker_tools_download_delay }}"
+  until: single_binary_install_result is succeeded
   become: true
   register: single_binary_install_result
 
