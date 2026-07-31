@@ -9,7 +9,7 @@
 
 - name: Check if Docker repository is configured (Debian-based systems)
   ansible.builtin.stat:
-    path: /etc/apt/sources.list.d/docker.list
+    path: /etc/apt/sources.list.d/docker.sources
   register: docker_repo_debian
   when: ansible_distribution in ["Ubuntu", "Debian"]
 

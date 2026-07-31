@@ -21,15 +21,28 @@
   until: url_check_result is succeeded
   register: url_check_result
 
-- name: Download and extract archive-based binary tools
+- name: Download archive-based binary tools
+  ansible.builtin.get_url:
+    url: "{{ item.value.url }}"
+    dest: "/tmp/{{ item.key }}-{{ item.value.url | basename }}"
+    mode: '0644'
+    checksum: "{{ item.value.checksum if item.value.checksum else omit }}"
+  loop: "{{ docker_tools_binaries | dict2items }}"
+  when: item.value.get('extract', false)
+  retries: "{{ docker_tools_download_retries }}"
+  delay: "{{ docker_tools_download_delay }}"
+  until: archive_download_result is succeeded
+  become: true
+  register: archive_download_result
+
+- name: Extract archive-based binary tools
   ansible.builtin.unarchive:
-    src: "{{ item.value.url }}"
+    src: "/tmp/{{ item.key }}-{{ item.value.url | basename }}"
     dest: "{{ docker_tools_binary_directory }}"
     remote_src: true
     owner: root
     group: root
     mode: '0755'
-    checksum: "{{ 'sha256:' + item.value.checksum if item.value.checksum else omit }}"
     exclude:
       - "CHANGELOG.md"
       - "LICENSE"
@@ -50,7 +63,7 @@
     mode: '0755'
     owner: root
     group: root
-    checksum: "{{ 'sha256:' + item.value.checksum if item.value.checksum else omit }}"
+    checksum: "{{ item.value.checksum if item.value.checksum else omit }}"
   loop: "{{ docker_tools_binaries | dict2items }}"
   when: not item.value.get('extract', false)
   retries: "{{ docker_tools_download_retries }}"

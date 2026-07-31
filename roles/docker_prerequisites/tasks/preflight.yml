@@ -5,7 +5,7 @@
 - name: Check minimum RAM requirement
   ansible.builtin.fail:
     msg: "System does not meet minimum RAM requirement of {{ docker_prerequisites_min_ram_mb }} MB. Available: {{ ansible_memtotal_mb }} MB"
-  when: ansible_memtotal_mb < docker_prerequisites_min_ram_mb
+  when: ansible_memtotal_mb < (docker_prerequisites_min_ram_mb | int)
 
 # Check architecture (assuming x86-64 as per spec)
 - name: Check if architecture is x86-64

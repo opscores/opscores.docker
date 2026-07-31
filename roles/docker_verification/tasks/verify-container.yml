@@ -2,7 +2,7 @@
 # Verify Docker hello-world container
 
 - name: Check if hello-world image exists
-  ansible.builtin.command: docker images hello-world --format '{{.Repository}}'
+  ansible.builtin.command: docker images -q hello-world
   register: hello_world_image_check
   changed_when: false
   become: true
@@ -11,7 +11,7 @@
 - name: Run Docker hello-world container
   ansible.builtin.command: docker run hello-world
   register: hello_world_result
-  changed_when: hello_world_image_check.stdout != "hello-world"
+  changed_when: hello_world_image_check.stdout == ""
   become: true
   when: docker_verification_run_hello_world
 
@@ -21,23 +21,38 @@
   when:
     - docker_verification_run_hello_world
     - hello_world_result is succeeded
-    - hello_world_image_check.stdout != "hello-world"
+    - hello_world_image_check.stdout == ""
+
+- name: Remove exited hello-world containers
+  ansible.builtin.shell: set -o pipefail && docker ps -aq --filter ancestor=hello-world | xargs -r docker rm
+  register: remove_container_result
+  changed_when: remove_container_result.stdout != ""
+  become: true
+  when:
+    - docker_verification_remove_hello_world_image
+    - hello_world_result is defined
+    - hello_world_result is succeeded
+    - hello_world_result is changed or hello_world_image_check.stdout != ""
 
 - name: Remove hello-world image if requested
   ansible.builtin.command: docker rmi hello-world
   register: remove_image_result
-  changed_when: hello_world_image_check.stdout == "hello-world"
+  changed_when: true
   become: true
   when:
     - docker_verification_remove_hello_world_image
-    - hello_world_image_check.stdout == "hello-world"
+    - hello_world_result is defined
+    - hello_world_result is succeeded
+    - hello_world_result is changed or hello_world_image_check.stdout != ""
 
 - name: Print image removal status
   ansible.builtin.debug:
     msg: "Hello-world image removed: {{ remove_image_result is succeeded }}"
   when:
     - docker_verification_remove_hello_world_image
-    - hello_world_image_check.stdout == "hello-world"
+    - hello_world_result is defined
+    - hello_world_result is succeeded
+    - hello_world_result is changed or hello_world_image_check.stdout != ""
 
 - name: Fail if hello-world container failed to run
   ansible.builtin.fail:

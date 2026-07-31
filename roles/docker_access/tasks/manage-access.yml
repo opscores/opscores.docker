@@ -19,13 +19,28 @@
   when:
     - docker_access_manage_user_groups
     - docker_access_users | length > 0
+  register: user_existence_check
+
+- name: Determine existing users from list
+  ansible.builtin.set_fact:
+    docker_access_existing_users: >-
+      {{ user_existence_check.results
+      | map(attribute='ansible_facts.getent_passwd')
+      | map('dict2items')
+      | sum(start=[])
+      | selectattr('value', 'ne', None)
+      | map(attribute='key')
+      | list }}
+  when:
+    - docker_access_manage_user_groups
+    - docker_access_users | length > 0
 
 - name: Add users to docker group
   ansible.builtin.user:
     name: "{{ item }}"
     groups: "{{ docker_access_group_name }}"
     append: true
-  loop: "{{ docker_access_users }}"
+  loop: "{{ docker_access_existing_users }}"
   become: true
   when:
     - docker_access_manage_user_groups
@@ -34,7 +49,7 @@
 
 - name: Print users added to docker group
   ansible.builtin.debug:
-    msg: "Added users {{ docker_access_users }} to {{ docker_access_group_name }} group"
+    msg: "Added users {{ docker_access_existing_users }} to {{ docker_access_group_name }} group"
   when:
     - user_group_result is succeeded
     - docker_access_users | length > 0

@@ -37,6 +37,12 @@
     checksum: "{{ docker_repository_gpg_key_checksum if docker_repository_gpg_key_checksum else omit }}"
   when: docker_repository_manage_repo
 
+- name: Remove legacy docker.list repository file
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/docker.list
+    state: absent
+  when: docker_repository_manage_repo
+
 - name: Add Docker repository in deb822 format
   ansible.builtin.copy:
     content: |
@@ -45,7 +51,7 @@
       Suites: {{ ansible_distribution_release }}
       Components: {{ docker_repository_channel }}
       Signed-By: /etc/apt/keyrings/docker.asc
-    dest: /etc/apt/sources.list.d/docker.list
+    dest: /etc/apt/sources.list.d/docker.sources
     mode: '0644'
   when: docker_repository_manage_repo
 
