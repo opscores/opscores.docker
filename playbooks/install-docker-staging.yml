@@ -5,6 +5,7 @@
 
 - name: Install Docker for pre-production environment
   hosts: docker_staging_hosts
+  gather_facts: true
   become: true
   vars:
     docker_configuration_daemon_json:

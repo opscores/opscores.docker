@@ -19,16 +19,19 @@
   ansible.builtin.package:
     name: "{{ docker_fedora_packages }}"
     state: present
+  become: true
 
 # Check and disable/remove conflicting services/packages (e.g., podman)
 - name: Gather list of installed conflicting packages (Fedora)
   ansible.builtin.package_facts:
     manager: auto
+  become: true
 
 - name: Uninstall podman if installed (remove conflict)
   ansible.builtin.package:
     name: podman
     state: absent
+  become: true
   when:
     - docker_prerequisites_remove_conflicts | bool
     - "'podman' in ansible_facts.packages"
@@ -37,6 +40,7 @@
   ansible.builtin.package:
     name: podman-docker
     state: absent
+  become: true
   when:
     - docker_prerequisites_remove_conflicts | bool
     - "'podman-docker' in ansible_facts.packages"
@@ -45,6 +49,7 @@
   ansible.builtin.package:
     name: docker-io
     state: absent
+  become: true
   when:
     - docker_prerequisites_remove_conflicts | bool
     - "'docker-io' in ansible_facts.packages"

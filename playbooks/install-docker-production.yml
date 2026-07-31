@@ -5,6 +5,7 @@
 
 - name: Install Docker for production environment
   hosts: docker_prod_hosts
+  gather_facts: true
   become: true
   vars:
     docker_configuration_mode: "merge"

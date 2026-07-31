@@ -4,6 +4,7 @@
 
 - name: Manage Docker access
   hosts: docker_hosts
+  gather_facts: true
   become: true
   vars:
     docker_access_users: []

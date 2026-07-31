@@ -32,6 +32,23 @@
     - daemon_json_stat.stat.exists
   become: true
 
+- name: Find existing daemon.json backups
+  ansible.builtin.find:
+    paths: /etc/docker
+    patterns: "daemon.json.*"
+    file_type: file
+  register: daemon_json_backups
+  become: true
+  when: docker_configuration_backup
+
+- name: Prune old daemon.json backups
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop: "{{ (daemon_json_backups.files | sort(attribute='mtime', reverse=true) | map(attribute='path') | list)[docker_configuration_backup_keep:] }}"
+  become: true
+  when: docker_configuration_backup
+
 - name: Read existing daemon.json content for merge mode
   ansible.builtin.slurp:
     src: /etc/docker/daemon.json

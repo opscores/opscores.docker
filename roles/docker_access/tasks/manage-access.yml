@@ -13,12 +13,12 @@
     database: passwd
     key: "{{ item }}"
     split: ':'
+    fail_key: false
   loop: "{{ docker_access_users }}"
   become: true
   when:
     - docker_access_manage_user_groups
     - docker_access_users | length > 0
-  ignore_errors: true
 
 - name: Add users to docker group
   ansible.builtin.user:

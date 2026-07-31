@@ -5,6 +5,7 @@
 
 - name: Install Docker for development
   hosts: docker_dev_hosts
+  gather_facts: true
   become: true
   vars:
     docker_plugins_list:

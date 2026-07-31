@@ -4,6 +4,7 @@
 
 - name: Configure Docker daemon settings
   hosts: docker_hosts
+  gather_facts: true
   become: true
   vars:
     docker_configuration_daemon_json: {}

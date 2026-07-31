@@ -2,6 +2,6 @@
 # Variables for Fedora systems
 
 docker_fedora_packages:
-  - "{{ 'docker-ce-' + docker_engine_version if docker_engine_version else 'docker-ce' }}"
-  - "{{ 'docker-ce-cli-' + docker_engine_version if docker_engine_version else 'docker-ce-cli' }}"
+  - "{{ 'docker-ce-' + docker_engine_version + '*' if docker_engine_version else 'docker-ce' }}"
+  - "{{ 'docker-ce-cli-' + docker_engine_version + '*' if docker_engine_version else 'docker-ce-cli' }}"
   - containerd.io

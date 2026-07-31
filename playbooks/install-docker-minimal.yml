@@ -5,6 +5,7 @@
 
 - name: Minimal Docker Engine installation
   hosts: docker_hosts
+  gather_facts: true
   become: true
   vars:
     docker_verification_run_hello_world: false

@@ -18,6 +18,7 @@ This role manages Docker daemon configuration on supported systems.
 |----------|------|---------|-------------|
 | `docker_configuration_daemon_json` | dict | `{}` | Dictionary of parameters for /etc/docker/daemon.json file |
 | `docker_configuration_backup` | boolean | `true` | Whether to create a backup of daemon.json before modification |
+| `docker_configuration_backup_keep` | int | `5` | Number of daemon.json backups to keep; older ones are pruned |
 | `docker_configuration_mode` | string | `"overwrite"` | Configuration management mode: `"overwrite"` (overwrite) or `"merge"` (merge) |
 | `docker_configuration_notify_restart` | boolean | `true` | Whether to restart Docker service via handler if daemon.json file changed |
 

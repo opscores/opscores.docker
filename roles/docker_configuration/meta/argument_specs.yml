@@ -14,6 +14,11 @@ argument_specs:
         default: true
         required: false
         description: "Whether to create a backup of daemon.json before modification"
+      docker_configuration_backup_keep:
+        type: "int"
+        default: 5
+        required: false
+        description: "Number of daemon.json backups to keep; older ones are pruned"
       docker_configuration_mode:
         type: "str"
         default: "overwrite"

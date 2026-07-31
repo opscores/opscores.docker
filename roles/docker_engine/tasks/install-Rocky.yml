@@ -8,7 +8,7 @@
 - name: Install Docker Engine packages
   ansible.builtin.package:
     name: "{{ docker_rocky_packages }}"
-    state: "{{ 'present' if not docker_engine_version else 'present' }}"
+    state: present
   register: docker_install_result
   become: true
 

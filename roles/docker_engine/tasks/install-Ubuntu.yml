@@ -6,9 +6,10 @@
   tags: [always]
 
 - name: Install Docker Engine packages
-  ansible.builtin.package:
+  ansible.builtin.apt:
     name: "{{ docker_ubuntu_packages }}"
-    state: "{{ 'present' if not docker_engine_version else 'present' }}"
+    state: present
+    allow_downgrade: "{{ docker_engine_version != '' }}"
   register: docker_install_result
   become: true
 
