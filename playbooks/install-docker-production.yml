@@ -9,6 +9,11 @@
   vars:
     docker_configuration_mode: "merge"
     docker_configuration_backup: true
+    docker_configuration_daemon_json:
+      log-driver: "json-file"
+      log-opts:
+        "max-size": "10m"
+        "max-file": "3"
     docker_access_users: []
     docker_verification_run_hello_world: true
     docker_verification_remove_hello_world_image: true

@@ -6,3 +6,6 @@ docker_prerequisites_remove_conflicts: true
 
 # Whether to install bash completion for docker
 docker_prerequisites_install_completion: false
+
+# Minimum RAM requirement in MB for the preflight check
+docker_prerequisites_min_ram_mb: 1024

@@ -13,6 +13,7 @@ This role prepares a target system for the installation of Docker Engine by inst
 | --------------------------------------- | ------- | ----------------------------------------------------------------------------------------------- |
 | `docker_prerequisites_remove_conflicts` | `true`  | If `true`, the role will attempt to remove conflicting packages like `podman`, `docker.io`, etc. |
 | `docker_prerequisites_install_completion` | `false` | If `true`, the role will install bash completion package for Docker commands. |
+| `docker_prerequisites_min_ram_mb` | `1024` | Minimum RAM requirement in MB checked by the preflight task. |
 
 ## Dependencies
 

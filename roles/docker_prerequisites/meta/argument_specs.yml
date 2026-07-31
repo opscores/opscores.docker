@@ -17,3 +17,8 @@ argument_specs:
         default: false
         description: >
           If true, the role will install bash completion package for Docker commands.
+      docker_prerequisites_min_ram_mb:
+        type: "int"
+        default: 1024
+        description: >
+          Minimum RAM requirement in MB checked by the preflight task.

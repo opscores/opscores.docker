@@ -1,6 +1,11 @@
 ---
 # Configure Docker daemon
 
+- name: Validate docker_configuration_daemon_json is a mapping
+  ansible.builtin.fail:
+    msg: "docker_configuration_daemon_json must be a dictionary (got {{ docker_configuration_daemon_json | type_debug }}). Pass a dict, not a JSON string."
+  when: docker_configuration_daemon_json is not mapping
+
 - name: Create /etc/docker directory if it doesn't exist
   ansible.builtin.file:
     path: /etc/docker
@@ -74,20 +79,14 @@
     final_daemon_config: "{{ docker_configuration_daemon_json }}"
   when: docker_configuration_mode == "overwrite"
 
-- name: Validate final daemon configuration JSON format
-  block:
-    - name: Serialize final daemon configuration to JSON
-      ansible.builtin.set_fact:
-        final_daemon_config_json: "{{ final_daemon_config | to_nice_json }}"
-  rescue:
-    - name: Fail on invalid daemon configuration
-      ansible.builtin.fail:
-        msg: "Invalid JSON format in docker_configuration_daemon_json"
+- name: Serialize final daemon configuration to JSON
+  ansible.builtin.set_fact:
+    final_daemon_config_json: "{{ final_daemon_config | to_nice_json }}"
 
 - name: Debug final_daemon_config content
   ansible.builtin.debug:
     msg: "Final daemon.json content: {{ final_daemon_config_json }}"
-  when: ansible_verbosity >= 2  # Only show when verbose mode is enabled
+    verbosity: 2
 
 - name: Write daemon.json configuration
   ansible.builtin.copy:
