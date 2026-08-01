@@ -12,7 +12,8 @@
   when: not docker_binary.stat.exists
 
 - name: Check if Docker service is running
-  ansible.builtin.command: systemctl is-active docker
+  ansible.builtin.systemd:
+    name: docker
   register: docker_service_status
   failed_when: false
   changed_when: false
@@ -21,7 +22,7 @@
 - name: Fail if Docker service is not active
   ansible.builtin.fail:
     msg: "Docker service is not running. Please ensure the 'docker_engine' role has started the service."
-  when: docker_service_status.stdout != "active"
+  when: docker_service_status.status.ActiveState != "active"
 
 - name: Check if system architecture is supported
   ansible.builtin.fail:
