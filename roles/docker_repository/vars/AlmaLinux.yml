@@ -4,4 +4,3 @@
 docker_almalinux_repo_deps:
   - dnf-plugins-core
   - ca-certificates
-  - yum-utils
