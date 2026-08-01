@@ -30,10 +30,11 @@ This role verifies Docker installation on supported systems.
     - opscores.docker.docker_prerequisites
     - opscores.docker.docker_repository
     - opscores.docker.docker_engine
-    - opscores.docker.docker_verification
-      docker_verification_check_plugins:
-        - compose
-        - buildx
+    - name: opscores.docker.docker_verification
+      vars:
+        docker_verification_check_plugins:
+          - compose
+          - buildx
 ```
 
 ## Implementation Details

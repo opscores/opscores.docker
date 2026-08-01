@@ -1,7 +1,7 @@
 ---
 # defaults file for docker_prerequisites role
 
-# Whether to remove conflicting packages like podman, podman-docker, docker.io, docker-ce
+# Whether to remove conflicting packages like podman, podman-docker, docker.io
 docker_prerequisites_remove_conflicts: true
 
 # Whether to install bash completion for docker

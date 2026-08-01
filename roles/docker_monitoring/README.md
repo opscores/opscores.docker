@@ -38,11 +38,12 @@ This role sets up and configures Docker monitoring infrastructure on supported s
     - opscores.docker.docker_prerequisites
     - opscores.docker.docker_repository
     - opscores.docker.docker_engine
-    - opscores.docker.docker_monitoring
-      docker_monitoring_install_cadvisor: true
-      docker_monitoring_install_node_exporter: true
-      docker_monitoring_prepare_prometheus_config: true
-      docker_monitoring_prepare_grafana_dashboards: true
+    - name: opscores.docker.docker_monitoring
+      vars:
+        docker_monitoring_install_cadvisor: true
+        docker_monitoring_install_node_exporter: true
+        docker_monitoring_prepare_prometheus_config: true
+        docker_monitoring_prepare_grafana_dashboards: true
 ```
 
 ## Implementation Details

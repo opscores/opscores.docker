@@ -29,10 +29,11 @@ This role manages Docker access for users on supported systems.
     - opscores.docker.docker_prerequisites
     - opscores.docker.docker_repository
     - opscores.docker.docker_engine
-    - opscores.docker.docker_access
-      docker_access_users:
-        - myuser
-        - anotheruser
+    - name: opscores.docker.docker_access
+      vars:
+        docker_access_users:
+          - myuser
+          - anotheruser
 ```
 
 ## Implementation Details

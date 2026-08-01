@@ -59,7 +59,7 @@ The collection includes ready-made playbooks for common scenarios:
 | `install-docker-production.yml` | Full production installation on a single host | All 9 roles | Full installation with monitoring and verification |
 | `validate-docker-installation.yml` | Independent, idempotent verification of the current Docker installation | `docker_verification` | Does not change system state, checks functionality |
 | `configure-docker-daemon.yml` | Update or configure daemon.json without reinstalling Docker | `docker_configuration` | Automatic backup, restart only on change |
-| `manage-docker-access.yml` | Idempotent management of Docker socket access | `docker_access` | Add/remove users from the docker group |
+| `manage-docker-access.yml` | Idempotent management of Docker socket access | `docker_access` | Add users to the docker group |
 | `bootstrap-docker-from-scratch.yml` | Single entry point playbook to deploy Docker from scratch on a clean system | All 9 roles | Full installation for new hosts, e.g. after Terraform provisioning |
 
 ## Usage

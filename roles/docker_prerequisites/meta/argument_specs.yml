@@ -11,7 +11,7 @@ argument_specs:
         default: true
         description: >
           If true, the role will attempt to remove conflicting packages like podman,
-          podman-docker, docker.io, or docker-ce before proceeding.
+          podman-docker, docker.io before proceeding.
       docker_prerequisites_install_completion:
         type: "bool"
         default: false

@@ -32,11 +32,12 @@ This role installs Docker auxiliary tools on supported systems.
     - opscores.docker.docker_prerequisites
     - opscores.docker.docker_repository
     - opscores.docker.docker_engine
-    - opscores.docker.docker_tools
-      docker_tools_packages:
-        - ctop
-        - watch
-      docker_tools_install_completion: true
+    - name: opscores.docker.docker_tools
+      vars:
+        docker_tools_packages:
+          - ctop
+          - watch
+        docker_tools_install_completion: true
 ```
 
 ## Implementation Details
