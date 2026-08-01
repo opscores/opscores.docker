@@ -58,6 +58,11 @@
   failed_when: false  # Allow failure if file doesn't exist
 
 - name: Validate existing daemon.json content
+  when:
+    - docker_configuration_mode == "merge"
+    - existing_daemon_json is succeeded
+    - existing_daemon_json.get('content') is defined
+    - existing_daemon_json.get('content', '') | length > 0
   block:
     - name: Decode and validate existing daemon.json content
       ansible.builtin.set_fact:
@@ -66,11 +71,6 @@
     - name: Handle invalid daemon.json content
       ansible.builtin.set_fact:
         existing_daemon_json_decoded: {}
-  when:
-    - docker_configuration_mode == "merge"
-    - existing_daemon_json is succeeded
-    - existing_daemon_json.get('content') is defined
-    - existing_daemon_json.get('content', '') | length > 0
 
 - name: Set fact for merged configuration
   ansible.builtin.set_fact:
@@ -112,7 +112,7 @@
     mode: '0644'
     owner: root
     group: root
-  notify: restart docker
+  notify: Restart Docker
   register: daemon_json_result
   become: true
 

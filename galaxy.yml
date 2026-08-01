@@ -1,3 +1,4 @@
+---
 namespace: opscores
 name: docker
 version: 0.2.10

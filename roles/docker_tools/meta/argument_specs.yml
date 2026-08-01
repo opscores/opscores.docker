@@ -13,7 +13,12 @@ argument_specs:
         type: "dict"
         default: {}
         required: false
-        description: "Dictionary where key is binary name, value is dict with url and checksum (SHA256). For archive-based tools (e.g. tar.gz) set extract: true. Example: {'dive': {'url': 'https://github.com/wagoodman/dive/releases/...', 'checksum': 'sha256:...', 'extract': true}}"
+        description: >-
+          Dictionary where key is binary name, value is dict with url and
+          checksum (SHA256). For archive-based tools (e.g. tar.gz) set
+          extract: true. Example: {'dive': {'url':
+          'https://github.com/wagoodman/dive/releases/...', 'checksum':
+          'sha256:...', 'extract': true}}
       docker_tools_install_completion:
         type: "bool"
         default: false

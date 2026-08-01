@@ -12,14 +12,14 @@
 - name: Print Docker Compose version
   ansible.builtin.debug:
     msg: "Docker Compose version: {{ docker_compose_result.stdout }}"
-  when: 
+  when:
     - "'compose' in docker_verification_check_plugins"
     - docker_compose_result is succeeded
 
 - name: Fail if Docker Compose plugin check failed
   ansible.builtin.fail:
     msg: "Docker Compose plugin check failed"
-  when: 
+  when:
     - "'compose' in docker_verification_check_plugins"
     - docker_compose_result is failed
 
@@ -34,13 +34,13 @@
 - name: Print Docker Buildx version
   ansible.builtin.debug:
     msg: "Docker Buildx version: {{ docker_buildx_result.stdout }}"
-  when: 
+  when:
     - "'buildx' in docker_verification_check_plugins"
     - docker_buildx_result is succeeded
 
 - name: Fail if Docker Buildx plugin check failed
   ansible.builtin.fail:
     msg: "Docker Buildx plugin check failed"
-  when: 
+  when:
     - "'buildx' in docker_verification_check_plugins"
     - docker_buildx_result is failed

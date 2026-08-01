@@ -7,7 +7,7 @@
 - name: Check if OS is supported
   ansible.builtin.fail:
     msg: "Unsupported OS '{{ ansible_distribution }} {{ ansible_distribution_version }}'. Supported distributions: Ubuntu, Debian, AlmaLinux, Rocky, Fedora"
-  when: 
+  when:
     - ansible_distribution not in ['Ubuntu', 'Debian', 'AlmaLinux', 'Rocky', 'Fedora']
 
 - name: Verify Docker service status
