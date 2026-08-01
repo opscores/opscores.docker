@@ -21,16 +21,31 @@
     state: present
   when: docker_repository_manage_repo
 
+- name: Remove legacy Docker repository files
+  ansible.builtin.find:
+    paths: /etc/yum.repos.d
+    patterns: "docker-ce-*.repo"
+    file_type: file
+  register: legacy_docker_repos
+  when: docker_repository_manage_repo
+
+- name: Delete legacy Docker repository files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop: "{{ legacy_docker_repos.files | map(attribute='path') | list }}"
+  when: docker_repository_manage_repo
+
 - name: Create Docker repository file for Rocky
   ansible.builtin.copy:
     content: |
-      [docker-ce-stable]
-      name=Docker CE Stable - $basearch
-      baseurl={{ docker_repo_base_url }}/linux/{{ docker_distro_code }}/$releasever/$basearch/stable
+      [docker-ce-{{ docker_repository_channel }}]
+      name=Docker CE {{ docker_repository_channel }} - $basearch
+      baseurl={{ docker_repo_base_url }}/linux/{{ docker_distro_code }}/$releasever/$basearch/{{ docker_repository_channel }}
       enabled=1
       gpgcheck=1
-      gpgkey=https://download.docker.com/linux/{{ docker_distro_code }}/gpg
-    dest: "/etc/yum.repos.d/docker-ce-stable.repo"
+      gpgkey={{ docker_repo_base_url }}/linux/{{ docker_distro_code }}/gpg
+    dest: "/etc/yum.repos.d/docker-ce.repo"
     mode: '0644'
     owner: root
     group: root

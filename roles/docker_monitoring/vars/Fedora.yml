@@ -1,8 +1,5 @@
 ---
 # Variables for Fedora systems
 
-docker_monitoring_packages:
-  - node_exporter
-
 docker_node_exporter_package: node_exporter
 docker_node_exporter_service_name: node_exporter
