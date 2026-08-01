@@ -59,7 +59,7 @@
   vars:
     docker_configuration_daemon_json: >-
       {{
-        docker_configuration_daemon_json | default({})
+        lookup('vars', 'docker_configuration_daemon_json', default={})
         | combine({
           'metrics-addr': docker_monitoring_docker_daemon_metrics_addr +
                           ':' + docker_monitoring_docker_daemon_metrics_port | string
@@ -71,4 +71,8 @@
 
 - name: Print status of monitoring components installation
   ansible.builtin.debug:
-    msg: "Monitoring components installed: cAdvisor={{ docker_monitoring_install_cadvisor }}, node_exporter={{ docker_monitoring_install_node_exporter }}, Docker daemon metrics={{ docker_monitoring_install_docker_daemon_metrics }}"
+    msg: >-
+      Monitoring components installed:
+      cAdvisor={{ docker_monitoring_install_cadvisor }},
+      node_exporter={{ docker_monitoring_install_node_exporter }},
+      Docker daemon metrics={{ docker_monitoring_install_docker_daemon_metrics }}
