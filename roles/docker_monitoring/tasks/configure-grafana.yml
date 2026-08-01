@@ -53,7 +53,7 @@
             "targets": [
               {
                 "expr": "container_last_seen{name!=\"\"}",
-                "legendFormat": "{{name}}",
+                "legendFormat": "{% raw %}{{name}}{% endraw %}",
                 "refId": "A"
               }
             ],
@@ -171,7 +171,7 @@
               "tooltip": {"mode": "single"}
             },
             "targets": [
-              {"expr": "rate(container_cpu_usage_seconds_total[5m])", "legendFormat": "{{name}}", "refId": "A"}
+              {"expr": "rate(container_cpu_usage_seconds_total[5m])", "legendFormat": "{% raw %}{{name}}{% endraw %}", "refId": "A"}
             ],
             "title": "CPU Usage by Container",
             "type": "timeseries"
@@ -194,7 +194,7 @@
               "tooltip": {"mode": "single"}
             },
             "targets": [
-              {"expr": "container_memory_usage_bytes", "legendFormat": "{{name}}", "refId": "A"}
+              {"expr": "container_memory_usage_bytes", "legendFormat": "{% raw %}{{name}}{% endraw %}", "refId": "A"}
             ],
             "title": "Memory Usage by Container",
             "type": "timeseries"
@@ -206,7 +206,18 @@
         "tags": ["docker", "cadvisor"],
         "templating": {
           "list": [
-            {"current": {"selected": false, "text": "Prometheus", "value": "Prometheus"}, "hide": 0, "includeAll": false, "label": "Data Source", "name": "DS_PROMETHEUS", "options": [], "query": "prometheus", "refresh": 1, "regex": "", "type": "datasource"}
+            {
+              "current": {"selected": false, "text": "Prometheus", "value": "Prometheus"},
+              "hide": 0,
+              "includeAll": false,
+              "label": "Data Source",
+              "name": "DS_PROMETHEUS",
+              "options": [],
+              "query": "prometheus",
+              "refresh": 1,
+              "regex": "",
+              "type": "datasource"
+            }
           ]
         },
         "time": {"from": "now-6h", "to": "now"},
@@ -242,7 +253,14 @@
                 "color": {"mode": "palette-classic"},
                 "custom": {"lineWidth": 1},
                 "mappings": [],
-                "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 70}, {"color": "red", "value": 90}]}
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {"color": "green", "value": null},
+                    {"color": "yellow", "value": 70},
+                    {"color": "red", "value": 90}
+                  ]
+                }
               },
               "overrides": []
             },
@@ -268,7 +286,14 @@
                 "color": {"mode": "palette-classic"},
                 "custom": {"lineWidth": 1},
                 "mappings": [],
-                "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 70}, {"color": "red", "value": 90}]}
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {"color": "green", "value": null},
+                    {"color": "yellow", "value": 70},
+                    {"color": "red", "value": 90}
+                  ]
+                }
               },
               "overrides": []
             },
@@ -282,7 +307,11 @@
             },
             "pluginVersion": "9.0.0",
             "targets": [
-              {"expr": "100 - (node_filesystem_avail_bytes{mountpoint=\"/\"} / node_filesystem_size_bytes{mountpoint=\"/\"} * 100)", "legendFormat": "Disk Usage %", "refId": "A"}
+              {
+                "expr": "100 - (node_filesystem_avail_bytes{mountpoint=\"/\"} / node_filesystem_size_bytes{mountpoint=\"/\"} * 100)",
+                "legendFormat": "Disk Usage %",
+                "refId": "A"
+              }
             ],
             "title": "Disk Usage %",
             "type": "gauge"
@@ -294,7 +323,14 @@
                 "color": {"mode": "palette-classic"},
                 "custom": {"lineWidth": 1},
                 "mappings": [],
-                "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 70}, {"color": "red", "value": 90}]}
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {"color": "green", "value": null},
+                    {"color": "yellow", "value": 70},
+                    {"color": "red", "value": 90}
+                  ]
+                }
               },
               "overrides": []
             },
@@ -320,7 +356,18 @@
         "tags": ["docker", "node-exporter"],
         "templating": {
           "list": [
-            {"current": {"selected": false, "text": "Prometheus", "value": "Prometheus"}, "hide": 0, "includeAll": false, "label": "Data Source", "name": "DS_PROMETHEUS", "options": [], "query": "prometheus", "refresh": 1, "regex": "", "type": "datasource"}
+            {
+              "current": {"selected": false, "text": "Prometheus", "value": "Prometheus"},
+              "hide": 0,
+              "includeAll": false,
+              "label": "Data Source",
+              "name": "DS_PROMETHEUS",
+              "options": [],
+              "query": "prometheus",
+              "refresh": 1,
+              "regex": "",
+              "type": "datasource"
+            }
           ]
         },
         "time": {"from": "now-6h", "to": "now"},
