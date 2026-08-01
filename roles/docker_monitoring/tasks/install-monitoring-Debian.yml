@@ -15,7 +15,7 @@
 - name: Install cAdvisor container
   community.docker.docker_container:
     name: cadvisor
-    image: gcr.io/cadvisor/cadvisor:v0.47.0
+    image: ghcr.io/google/cadvisor:v0.60.5
     state: started
     restart_policy: unless-stopped
     ports:
