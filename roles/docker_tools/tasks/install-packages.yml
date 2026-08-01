@@ -11,4 +11,3 @@
 - name: Print installed packages
   ansible.builtin.debug:
     msg: "Installed packages: {{ docker_tools_packages }}"
-  when: package_install_result is changed

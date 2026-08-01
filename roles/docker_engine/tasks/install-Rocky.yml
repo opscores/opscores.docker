@@ -11,14 +11,10 @@
     state: present
   register: docker_install_result
   become: true
+  notify: Ensure Docker service state
 
-- name: Ensure Docker service state
-  ansible.builtin.systemd:
-    name: docker
-    state: "{{ docker_engine_service_state }}"
-    enabled: "{{ docker_engine_service_enabled }}"
-  become: true
-  when: docker_install_result is changed
+- name: Flush handlers to apply Docker service state
+  ansible.builtin.meta: flush_handlers
 
 - name: Check if Docker service is running
   ansible.builtin.systemd:

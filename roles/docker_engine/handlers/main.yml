@@ -14,3 +14,10 @@
     state: stopped
   become: true
   listen: "stop docker"
+
+- name: Ensure Docker service state
+  ansible.builtin.systemd:
+    name: docker
+    state: "{{ docker_engine_service_state }}"
+    enabled: "{{ docker_engine_service_enabled }}"
+  become: true
