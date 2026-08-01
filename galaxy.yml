@@ -1,7 +1,7 @@
 ---
 namespace: opscores
 name: docker
-version: 0.2.10
+version: 0.2.11
 readme: README.md
 authors:
   - Alexey Gorynovich
