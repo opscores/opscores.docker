@@ -36,7 +36,7 @@ An Ansible collection of roles for managing Docker Engine and related tools. It 
 
 The collection follows a "Core + Satellites" modularity principle:
 - **Installation Core**: `docker_prerequisites` -> `docker_repository` -> `docker_engine`
-- **Satellite Roles**: Independent roles that depend only on `docker_engine`
+- **Satellite Roles**: Independent roles that depend only on `docker_engine`. The only exception is `docker_monitoring`, which also depends on `docker_configuration` when Docker daemon metrics are enabled (`docker_monitoring_install_docker_daemon_metrics: true`).
 
 Each role uses an **architecture with separate files for each supported distribution**:
 - `install-Ubuntu.yml` - tasks for Ubuntu

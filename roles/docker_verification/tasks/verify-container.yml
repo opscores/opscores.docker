@@ -9,7 +9,7 @@
   failed_when: false
 
 - name: Run Docker hello-world container
-  ansible.builtin.command: docker run hello-world
+  ansible.builtin.command: docker run --rm hello-world
   register: hello_world_result
   changed_when: hello_world_image_check.stdout == ""
   become: true

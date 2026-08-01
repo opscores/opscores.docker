@@ -70,3 +70,8 @@ argument_specs:
         default: 9323
         required: false
         description: "Port on which Docker daemon metrics will be exposed."
+      docker_monitoring_docker_daemon_metrics_addr:
+        type: "str"
+        default: "127.0.0.1"
+        required: false
+        description: "IP address on which Docker daemon metrics will be exposed (use 0.0.0.0 to bind all interfaces)."

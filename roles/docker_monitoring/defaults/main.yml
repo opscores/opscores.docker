@@ -11,5 +11,6 @@ docker_monitoring_grafana_dashboards_path: "/etc/grafana/dashboards/"
 docker_monitoring_cadvisor_port: 8080
 docker_monitoring_node_exporter_port: 9100
 docker_monitoring_docker_daemon_metrics_port: 9323
+docker_monitoring_docker_daemon_metrics_addr: "127.0.0.1"
 docker_monitoring_service_state: "started"
 docker_monitoring_service_enabled: true

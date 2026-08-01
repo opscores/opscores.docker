@@ -55,8 +55,8 @@
       {{
         docker_configuration_daemon_json | default({})
         | combine({
-          'metrics-addr': '0.0.0.0:' + docker_monitoring_docker_daemon_metrics_port | string,
-          'experimental': true
+          'metrics-addr': docker_monitoring_docker_daemon_metrics_addr +
+                          ':' + docker_monitoring_docker_daemon_metrics_port | string
         }, recursive=True)
       }}
     docker_configuration_mode: "merge"

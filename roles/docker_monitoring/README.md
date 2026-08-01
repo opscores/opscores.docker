@@ -11,6 +11,7 @@ This role sets up and configures Docker monitoring infrastructure on supported s
 ## Dependencies
 
 - docker_engine role (must be run before this role)
+- When `docker_monitoring_install_docker_daemon_metrics: true` (default), the role implicitly calls the `docker_configuration` role via `include_role` to enable Docker daemon metrics in `/etc/docker/daemon.json`.
 
 ## Role Variables
 
@@ -27,6 +28,7 @@ This role sets up and configures Docker monitoring infrastructure on supported s
 | `docker_monitoring_cadvisor_port` | integer | `8080` | Port on which cAdvisor will be running. |
 | `docker_monitoring_node_exporter_port` | integer | `9100` | Port on which node_exporter will be running. |
 | `docker_monitoring_docker_daemon_metrics_port` | integer | `9323` | Port on which Docker daemon metrics will be exposed. |
+| `docker_monitoring_docker_daemon_metrics_addr` | string | `"127.0.0.1"` | IP address on which Docker daemon metrics will be exposed (use `0.0.0.0` to bind all interfaces). |
 | `docker_monitoring_service_state` | string | `"started"` | Desired state of monitoring services: `started`, `stopped`, `restarted`, `reloaded` |
 | `docker_monitoring_service_enabled` | boolean | `true` | Enable or disable monitoring services autostart on boot |
 
