@@ -26,9 +26,9 @@ argument_specs:
         description: "List of package names to install via apt/dnf."
       docker_monitoring_cadvisor_addr:
         type: "str"
-        default: "0.0.0.0"
+        default: "127.0.0.1"
         required: false
-        description: "IP address on which cAdvisor will listen (use 127.0.0.1 to bind localhost only)."
+        description: "IP address on which cAdvisor will listen (default localhost only; set an internal/VPN IP or 0.0.0.0 to allow remote scraping)."
       docker_monitoring_cadvisor_port:
         type: "int"
         default: 8080
@@ -36,9 +36,9 @@ argument_specs:
         description: "Port on which cAdvisor will be running."
       docker_monitoring_node_exporter_addr:
         type: "str"
-        default: "0.0.0.0"
+        default: "127.0.0.1"
         required: false
-        description: "IP address on which node_exporter will listen (use 127.0.0.1 to bind localhost only)."
+        description: "IP address on which node_exporter will listen (default localhost only; set an internal/VPN IP or 0.0.0.0 to allow remote scraping)."
       docker_monitoring_node_exporter_port:
         type: "int"
         default: 9100

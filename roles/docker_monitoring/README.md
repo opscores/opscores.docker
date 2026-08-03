@@ -21,14 +21,18 @@ This role sets up and configures Docker monitoring infrastructure on supported s
 | `docker_monitoring_install_node_exporter` | boolean | `true` | Whether to install node_exporter for host metrics export. |
 | `docker_monitoring_install_docker_daemon_metrics` | boolean | `true` | Whether to enable Docker daemon metrics. |
 | `docker_monitoring_packages` | list | `[]` | List of package names to install via apt/dnf. |
-| `docker_monitoring_cadvisor_addr` | string | `"0.0.0.0"` | IP address on which cAdvisor will listen (use `127.0.0.1` to bind localhost only). |
+| `docker_monitoring_cadvisor_addr` | string | `"127.0.0.1"` | IP address on which cAdvisor will listen (default localhost only; set an internal/VPN IP or `0.0.0.0` to allow remote scraping). |
 | `docker_monitoring_cadvisor_port` | integer | `8080` | Port on which cAdvisor will be running. |
-| `docker_monitoring_node_exporter_addr` | string | `"0.0.0.0"` | IP address on which node_exporter will listen (use `127.0.0.1` to bind localhost only). |
+| `docker_monitoring_node_exporter_addr` | string | `"127.0.0.1"` | IP address on which node_exporter will listen (default localhost only; set an internal/VPN IP or `0.0.0.0` to allow remote scraping). |
 | `docker_monitoring_node_exporter_port` | integer | `9100` | Port on which node_exporter will be running. |
 | `docker_monitoring_docker_daemon_metrics_port` | integer | `9323` | Port on which Docker daemon metrics will be exposed. |
 | `docker_monitoring_docker_daemon_metrics_addr` | string | `"127.0.0.1"` | IP address on which Docker daemon metrics will be exposed (use `0.0.0.0` to bind all interfaces). |
 | `docker_monitoring_service_state` | string | `"started"` | Desired state of monitoring services: `started`, `stopped`, `restarted`, `reloaded` |
 | `docker_monitoring_service_enabled` | boolean | `true` | Enable or disable monitoring services autostart on boot |
+
+## Security
+
+By default all metric exporters (cAdvisor, node_exporter and Docker daemon metrics) bind to `127.0.0.1` only, so no metrics are exposed to the network unless explicitly configured. To allow a remote Prometheus to scrape, set the corresponding `*_addr` variable to the host's internal/VPN IP address (or `0.0.0.0` to bind all interfaces) and restrict access with firewall rules.
 
 ## Example Playbook
 
