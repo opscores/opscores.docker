@@ -29,11 +29,3 @@
 - name: Include Fedora-specific installation tasks
   ansible.builtin.include_tasks: install-monitoring-Fedora.yml
   when: ansible_distribution == 'Fedora'
-
-- name: Configure Prometheus integration
-  ansible.builtin.include_tasks: configure-prometheus.yml
-  when: docker_monitoring_prepare_prometheus_config
-
-- name: Configure Grafana dashboards
-  ansible.builtin.include_tasks: configure-grafana.yml
-  when: docker_monitoring_prepare_grafana_dashboards

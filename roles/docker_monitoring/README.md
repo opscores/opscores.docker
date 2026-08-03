@@ -20,11 +20,7 @@ This role sets up and configures Docker monitoring infrastructure on supported s
 | `docker_monitoring_install_cadvisor` | boolean | `true` | Whether to install cAdvisor for container monitoring. |
 | `docker_monitoring_install_node_exporter` | boolean | `true` | Whether to install node_exporter for host metrics export. |
 | `docker_monitoring_install_docker_daemon_metrics` | boolean | `true` | Whether to enable Docker daemon metrics. |
-| `docker_monitoring_prepare_prometheus_config` | boolean | `true` | Whether to prepare configuration files for Prometheus. |
-| `docker_monitoring_prepare_grafana_dashboards` | boolean | `true` | Whether to prepare dashboards for Grafana. |
 | `docker_monitoring_packages` | list | `[]` | List of package names to install via apt/dnf. |
-| `docker_monitoring_prometheus_config_path` | string | `"/etc/prometheus/targets/"` | Path to save Prometheus configuration files. |
-| `docker_monitoring_grafana_dashboards_path` | string | `"/etc/grafana/dashboards/"` | Path to save Grafana dashboards. |
 | `docker_monitoring_cadvisor_port` | integer | `8080` | Port on which cAdvisor will be running. |
 | `docker_monitoring_node_exporter_port` | integer | `9100` | Port on which node_exporter will be running. |
 | `docker_monitoring_docker_daemon_metrics_port` | integer | `9323` | Port on which Docker daemon metrics will be exposed. |
@@ -44,8 +40,6 @@ This role sets up and configures Docker monitoring infrastructure on supported s
       vars:
         docker_monitoring_install_cadvisor: true
         docker_monitoring_install_node_exporter: true
-        docker_monitoring_prepare_prometheus_config: true
-        docker_monitoring_prepare_grafana_dashboards: true
 ```
 
 ## Implementation Details

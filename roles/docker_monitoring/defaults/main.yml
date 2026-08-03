@@ -3,11 +3,7 @@
 docker_monitoring_install_cadvisor: true
 docker_monitoring_install_node_exporter: true
 docker_monitoring_install_docker_daemon_metrics: true
-docker_monitoring_prepare_prometheus_config: true
-docker_monitoring_prepare_grafana_dashboards: true
 docker_monitoring_packages: []
-docker_monitoring_prometheus_config_path: "/etc/prometheus/targets/"
-docker_monitoring_grafana_dashboards_path: "/etc/grafana/dashboards/"
 docker_monitoring_cadvisor_port: 8080
 docker_monitoring_node_exporter_port: 9100
 docker_monitoring_docker_daemon_metrics_port: 9323
