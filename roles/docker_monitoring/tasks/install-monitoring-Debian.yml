@@ -19,7 +19,7 @@
     state: started
     restart_policy: unless-stopped
     ports:
-      - "{{ docker_monitoring_cadvisor_port }}:8080"
+      - "{{ docker_monitoring_cadvisor_addr }}:{{ docker_monitoring_cadvisor_port }}:8080"
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
@@ -34,6 +34,17 @@
   ansible.builtin.package:
     name: "{{ docker_node_exporter_package }}"
     state: present
+  when: docker_monitoring_install_node_exporter
+  become: true
+
+- name: Configure node_exporter listen address
+  ansible.builtin.lineinfile:
+    path: "{{ docker_node_exporter_env_file }}"
+    regexp: '^{{ docker_node_exporter_env_var }}='
+    line: '{{ docker_node_exporter_env_var }}="--web.listen-address={{ docker_monitoring_node_exporter_addr }}:{{ docker_monitoring_node_exporter_port }}"'
+    create: true
+    mode: '0644'
+  notify: Restart node_exporter
   when: docker_monitoring_install_node_exporter
   become: true
 

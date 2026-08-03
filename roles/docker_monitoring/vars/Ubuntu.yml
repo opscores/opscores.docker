@@ -3,3 +3,5 @@
 
 docker_node_exporter_package: prometheus-node-exporter
 docker_node_exporter_service_name: prometheus-node-exporter
+docker_node_exporter_env_file: /etc/default/prometheus-node-exporter
+docker_node_exporter_env_var: ARGS

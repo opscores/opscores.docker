@@ -4,7 +4,9 @@ docker_monitoring_install_cadvisor: true
 docker_monitoring_install_node_exporter: true
 docker_monitoring_install_docker_daemon_metrics: true
 docker_monitoring_packages: []
+docker_monitoring_cadvisor_addr: "0.0.0.0"
 docker_monitoring_cadvisor_port: 8080
+docker_monitoring_node_exporter_addr: "0.0.0.0"
 docker_monitoring_node_exporter_port: 9100
 docker_monitoring_docker_daemon_metrics_port: 9323
 docker_monitoring_docker_daemon_metrics_addr: "127.0.0.1"

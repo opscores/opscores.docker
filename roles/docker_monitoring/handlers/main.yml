@@ -1,0 +1,9 @@
+---
+# handlers file for docker_monitoring
+
+- name: Restart node_exporter
+  ansible.builtin.systemd:
+    name: "{{ docker_node_exporter_service_name }}"
+    state: restarted
+    daemon_reload: true
+  become: true

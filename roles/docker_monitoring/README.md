@@ -21,7 +21,9 @@ This role sets up and configures Docker monitoring infrastructure on supported s
 | `docker_monitoring_install_node_exporter` | boolean | `true` | Whether to install node_exporter for host metrics export. |
 | `docker_monitoring_install_docker_daemon_metrics` | boolean | `true` | Whether to enable Docker daemon metrics. |
 | `docker_monitoring_packages` | list | `[]` | List of package names to install via apt/dnf. |
+| `docker_monitoring_cadvisor_addr` | string | `"0.0.0.0"` | IP address on which cAdvisor will listen (use `127.0.0.1` to bind localhost only). |
 | `docker_monitoring_cadvisor_port` | integer | `8080` | Port on which cAdvisor will be running. |
+| `docker_monitoring_node_exporter_addr` | string | `"0.0.0.0"` | IP address on which node_exporter will listen (use `127.0.0.1` to bind localhost only). |
 | `docker_monitoring_node_exporter_port` | integer | `9100` | Port on which node_exporter will be running. |
 | `docker_monitoring_docker_daemon_metrics_port` | integer | `9323` | Port on which Docker daemon metrics will be exposed. |
 | `docker_monitoring_docker_daemon_metrics_addr` | string | `"127.0.0.1"` | IP address on which Docker daemon metrics will be exposed (use `0.0.0.0` to bind all interfaces). |
@@ -40,6 +42,10 @@ This role sets up and configures Docker monitoring infrastructure on supported s
       vars:
         docker_monitoring_install_cadvisor: true
         docker_monitoring_install_node_exporter: true
+        # Bind exporters to a specific interface (e.g. VPN/internal IP) instead of all interfaces
+        docker_monitoring_cadvisor_addr: "10.8.0.15"
+        docker_monitoring_node_exporter_addr: "10.8.0.15"
+        docker_monitoring_docker_daemon_metrics_addr: "10.8.0.15"
 ```
 
 ## Implementation Details
